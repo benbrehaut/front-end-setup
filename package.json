@@ -1,0 +1,31 @@
+{
+  "name": "gulp-setup",
+  "version": "1.0.0",
+  "description": "Gulp setup for the task rnner",
+  "main": "index.php",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benbrehaut/gulp-setup/"
+  },
+  "keywords": [
+    "gulp"
+  ],
+  "author": "Ben Brehaut",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.18.12",
+    "gulp": "^3.8.8",
+    "gulp-autoprefixer": "4.0.0",
+    "gulp-clean-css": "^3.6.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-imagemin": "^3.3.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-sass": "^3.1.0",
+    "gulp-svgmin": "^1.2.4",
+    "gulp-svgstore": "^6.1.0",
+    "gulp-uglify": "^3.0.0"
+  }
+}
