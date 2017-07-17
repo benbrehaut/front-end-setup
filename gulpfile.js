@@ -18,11 +18,28 @@ var svgstore = require('gulp-svgstore');
  * @function variables
  * @description variables which contain things used throughout this file
  */
-var siteURL       = 'test-gulp.uk',
-    jsFiles       = 'assets/js/vendor/**/*.js',
-    mainJSFile    = 'assets/js/main.js',
-    sassFiles     = 'assets/scss/**/*.scss',
-    mainSassFile  = 'assets/scss/main.scss';
+
+// Site URL for Browser Sync
+var siteURL                = 'test-gulp.uk';
+
+// Main JS Variables
+var jsFiles                = 'assets/js/vendor/**/*.js';
+var mainJSFile             = 'assets/js/scripts.js';
+var outputJSFile           = 'main.js';
+var outputJSFileCompressed = 'main.min.js';
+var outputJSFileLocation   = 'assets/js/dist';
+
+// Main Sass / CSS files
+var sassFiles                = 'assets/scss/**/*.scss';
+var mainSassFile             = 'assets/scss/styles.scss';
+var outputCSSFile            = 'main.css';
+var outputCSSFileCompressed  = 'main.min.css';
+var outputCSSFileLocation    = 'assets/css/dist';
+
+// Autoprefixer
+var autoprefixerOptions = {
+  browsers: ['last 25 versions']
+};
 
 
 /**
@@ -33,9 +50,11 @@ var siteURL       = 'test-gulp.uk',
 gulp.task('scripts', function () {
   return gulp.src([jsFiles, mainJSFile])
     .pipe(plumber())
+    .pipe(concat(outputJSFile))  // output main JavaScript file without uglify
+    .pipe(gulp.dest(outputJSFileLocation))
     .pipe(uglify())
-    .pipe(concat('main.min.js'))
-    .pipe(gulp.dest('assets/js'))
+    .pipe(concat(outputJSFileCompressed)) // output main JavaScript file w/ uglify
+    .pipe(gulp.dest(outputJSFileLocation))
     .pipe(browserSync.reload({ stream: true }))
 });
 
@@ -44,16 +63,19 @@ gulp.task('scripts', function () {
  * @description compiles our static .scss files into one main .css file
  * @version v1
  */
-gulp.task('sass', function () {
+gulp.task('styles', function () {
   return gulp.src(mainSassFile)
     .pipe(sass({
       includePaths: ['scss'],
-      outputStyle: 'expanded',
       onError: browserSync.notify
     }).on('error', sass.logError))
-    .pipe(prefix(['last 2 versions'], { cascade: true }))
+    .pipe(prefix(autoprefixerOptions, { cascade: true }))
+    .pipe(plumber())
+    .pipe(concat(outputCSSFile)) // output main CSS file without cleanCSS
+    .pipe(gulp.dest(outputCSSFileLocation))
     .pipe(cleanCSS())
-    .pipe(gulp.dest('assets/css'))
+    .pipe(concat(outputCSSFileCompressed)) // output main CSS file w/ cleanCSS
+    .pipe(gulp.dest(outputCSSFileLocation))
     .pipe(browserSync.reload({ stream: true }));
 });
 
@@ -62,15 +84,15 @@ gulp.task('sass', function () {
  * @description generates BrowserSync for watching and refreshing page
  * @version v1
  */
-gulp.task('browser-sync', ['scripts', 'sass'], function () {
+gulp.task('browser-sync', ['scripts', 'styles'], function () {
   browserSync.init({
     proxy: siteURL,
     files: [
       "*.php",
       '**/*.php',
       'gulpfile.js',
-      'assets/js/*.js',
-      'assets/css/*.css'
+      outputJSFileLocation + '/*.js',
+      outputCSSFileLocation + '/*.css'
     ]
   });
 });
@@ -87,16 +109,6 @@ gulp.task('imgs', function () {
 });
 
 /**
- * @function watch
- * @description watchs the .js and .scss files for changes
- * @version v1
- */
-gulp.task('watch', function () {
-  gulp.watch(mainJSFile, ['scripts']);
-  gulp.watch(sassFiles, ['sass']);
-});
-
-/**
  * @function svgstore
  * @description generates and creates svg icons using #symbol
  * @version v1
@@ -105,6 +117,16 @@ gulp.task('svgstore', function () {
   return gulp.src('assets/icons/*.svg')
     .pipe(svgstore())
     .pipe(gulp.dest('assets/icons'));
+});
+
+/**
+ * @function watch
+ * @description watchs the .js and .scss files for changes
+ * @version v1
+ */
+gulp.task('watch', function () {
+  gulp.watch(mainJSFile, ['scripts']);
+  gulp.watch(sassFiles, ['styles']);
 });
 
 /**
