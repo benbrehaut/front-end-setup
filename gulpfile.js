@@ -4,17 +4,9 @@
  * @version v1
  */
 var gulp = require('gulp');
+var gulpLoadPlugins = require('gulp-load-plugins');
+var plugins = gulpLoadPlugins();
 var browserSync = require('browser-sync');
-var sass = require('gulp-sass');
-var cleanCSS = require('gulp-clean-css');
-var uglify = require('gulp-uglify');
-var plumber = require('gulp-plumber');
-var concat = require('gulp-concat');
-var imagemin = require('gulp-imagemin');
-var prefix = require('gulp-autoprefixer');
-var svgstore = require('gulp-svgstore');
-var sourcemaps = require('gulp-sourcemaps');
-var babel = require('gulp-babel');
 
 /**
  * @function variables
@@ -54,7 +46,7 @@ const autoprefixerOptions = {
 // Media Variables
 // - - - - - - - - - - - - - - - - - -
 const media = {
-  imgs: 'assets/imgs',
+  imgs: 'assets/img',
   icons: 'assets/icons'
 }
 
@@ -65,14 +57,14 @@ const media = {
  */
 gulp.task('scripts', function () {
   return gulp.src([js.jsFiles, js.mainJSFile])
-    .pipe(babel({
+    .pipe(plugins.babel({
       presets: ['env']
     }))
-    .pipe(plumber())
-    .pipe(concat(js.outputJSFile))  // output main JavaScript file without uglify
+    .pipe(plugins.plumber())
+    .pipe(plugins.concat(js.outputJSFile))  // output main JavaScript file without uglify
     .pipe(gulp.dest(js.outputJSFileLocation))
-    .pipe(uglify())
-    .pipe(concat(js.outputJSFileCompressed)) // output main JavaScript file w/ uglify
+    .pipe(plugins.uglify())
+    .pipe(plugins.concat(js.outputJSFileCompressed)) // output main JavaScript file w/ uglify
     .pipe(gulp.dest(js.outputJSFileLocation))
     .pipe(browserSync.reload({ stream: true }))
 });
@@ -84,18 +76,18 @@ gulp.task('scripts', function () {
  */
 gulp.task('styles', function () {
   return gulp.src(css.mainSassFile)
-    .pipe(sourcemaps.init())
-    .pipe(sass({
+    .pipe(plugins.sourcemaps.init())
+    .pipe(plugins.sass({
       includePaths: ['scss'],
       onError: browserSync.notify
-    }).on('error', sass.logError))
-    .pipe(prefix(autoprefixerOptions, { cascade: true }))
-    .pipe(plumber())
-    .pipe(concat(css.outputCSSFile)) // output main CSS file without cleanCSS
-    .pipe(sourcemaps.write('./maps'))
+    }).on('error', plugins.sass.logError))
+    .pipe(plugins.autoprefixer(autoprefixerOptions, { cascade: true }))
+    .pipe(plugins.plumber())
+    .pipe(plugins.concat(css.outputCSSFile)) // output main CSS file without cleanCSS
+    .pipe(plugins.sourcemaps.write('./maps'))
     .pipe(gulp.dest(css.outputCSSFileLocation))
-    .pipe(cleanCSS())
-    .pipe(concat(css.outputCSSFileCompressed)) // output main CSS file w/ cleanCSS
+    .pipe(plugins.cleanCss())
+    .pipe(plugins.concat(css.outputCSSFileCompressed)) // output main CSS file w/ cleanCSS
     .pipe(gulp.dest(css.outputCSSFileLocation))
     .pipe(browserSync.reload({ stream: true }));
 });
@@ -113,7 +105,6 @@ gulp.task('browser-sync', ['scripts', 'styles'], function () {
       '**/*.php',
       '*.twig',
       '**/*.twig',
-      'gulpfile.js',
       js.outputJSFileLocation + '/*.js',
       css.outputCSSFileLocation + '/*.css'
     ]
@@ -127,18 +118,18 @@ gulp.task('browser-sync', ['scripts', 'styles'], function () {
  */
 gulp.task('imgs', function () {
   gulp.src(media.imgs + '/*')
-    .pipe(imagemin())
+    .pipe(plugins.imagemin())
     .pipe(gulp.dest(media.imgs));
 });
 
 /**
- * @function svgstore
+ * @function svgs
  * @description generates and creates svg icons using #symbol
  * @version v1
  */
-gulp.task('svgstore', function () {
+gulp.task('svgs', function () {
   return gulp.src(media.icons + '/*.svg')
-    .pipe(svgstore())
+    .pipe(plugins.svgstore())
     .pipe(gulp.dest(media.icons));
 });
 
