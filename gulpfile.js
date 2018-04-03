@@ -81,7 +81,7 @@ gulp.task('styles', function () {
       includePaths: ['scss'],
       onError: browserSync.notify
     }).on('error', plugins.sass.logError))
-    .pipe(plugins.autoprefixer(autoprefixerOptions, { cascade: true }))
+    .pipe(plugins.autoprefixer())
     .pipe(plugins.plumber())
     .pipe(plugins.concat(css.outputCSSFile)) // output main CSS file without cleanCSS
     .pipe(plugins.sourcemaps.write('./maps'))
