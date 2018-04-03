@@ -57,9 +57,7 @@ const media = {
  */
 gulp.task('scripts', function () {
   return gulp.src([js.jsFiles, js.mainJSFile])
-    .pipe(plugins.babel({
-      presets: ['env']
-    }))
+    .pipe(plugins.babel())
     .pipe(plugins.plumber())
     .pipe(plugins.concat(js.outputJSFile))  // output main JavaScript file without uglify
     .pipe(gulp.dest(js.outputJSFileLocation))
