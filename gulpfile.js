@@ -58,6 +58,10 @@ const media = {
 gulp.task('scripts', function () {
   return gulp.src([js.jsFiles, js.mainJSFile])
     .pipe(plugins.babel())
+    .on('error', function(err) {
+      console.error('ERROR', err);
+      this.emit('end');
+    })
     .pipe(plugins.plumber())
     .pipe(plugins.concat(js.outputJSFile))  // output main JavaScript file without uglify
     .pipe(gulp.dest(js.outputJSFileLocation))
