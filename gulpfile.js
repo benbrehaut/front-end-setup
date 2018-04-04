@@ -5,7 +5,7 @@
  */
 var gulp = require('gulp');
 var gulpLoadPlugins = require('gulp-load-plugins');
-var plugins = gulpLoadPlugins();
+var $ = gulpLoadPlugins();
 var browserSync = require('browser-sync');
 
 /**
@@ -57,16 +57,16 @@ const media = {
  */
 gulp.task('scripts', function () {
   return gulp.src([js.jsFiles, js.mainJSFile])
-    .pipe(plugins.babel())
+    .pipe($.babel())
     .on('error', function(err) {
       console.error('ERROR', err);
       this.emit('end');
     })
-    .pipe(plugins.plumber())
-    .pipe(plugins.concat(js.outputJSFile))  // output main JavaScript file without uglify
+    .pipe($.plumber())
+    .pipe($.concat(js.outputJSFile))  // output main JavaScript file without uglify
     .pipe(gulp.dest(js.outputJSFileLocation))
-    .pipe(plugins.uglify())
-    .pipe(plugins.concat(js.outputJSFileCompressed)) // output main JavaScript file w/ uglify
+    .pipe($.uglify())
+    .pipe($.concat(js.outputJSFileCompressed)) // output main JavaScript file w/ uglify
     .pipe(gulp.dest(js.outputJSFileLocation))
     .pipe(browserSync.reload({ stream: true }))
 });
@@ -78,18 +78,18 @@ gulp.task('scripts', function () {
  */
 gulp.task('styles', function () {
   return gulp.src(css.mainSassFile)
-    .pipe(plugins.sourcemaps.init())
-    .pipe(plugins.sass({
+    .pipe($.sourcemaps.init())
+    .pipe($.sass({
       includePaths: ['scss'],
       onError: browserSync.notify
-    }).on('error', plugins.sass.logError))
-    .pipe(plugins.autoprefixer())
-    .pipe(plugins.plumber())
-    .pipe(plugins.concat(css.outputCSSFile)) // output main CSS file without cleanCSS
-    .pipe(plugins.sourcemaps.write('./maps'))
+    }).on('error', $.sass.logError))
+    .pipe($.autoprefixer())
+    .pipe($.plumber())
+    .pipe($.concat(css.outputCSSFile)) // output main CSS file without cleanCSS
+    .pipe($.sourcemaps.write('./maps'))
     .pipe(gulp.dest(css.outputCSSFileLocation))
-    .pipe(plugins.cleanCss())
-    .pipe(plugins.concat(css.outputCSSFileCompressed)) // output main CSS file w/ cleanCSS
+    .pipe($.cleanCss())
+    .pipe($.concat(css.outputCSSFileCompressed)) // output main CSS file w/ cleanCSS
     .pipe(gulp.dest(css.outputCSSFileLocation))
     .pipe(browserSync.reload({ stream: true }));
 });
@@ -120,7 +120,7 @@ gulp.task('browser-sync', ['scripts', 'styles'], function () {
  */
 gulp.task('imgs', function () {
   gulp.src(media.imgs + '/*')
-    .pipe(plugins.imagemin())
+    .pipe($.imagemin())
     .pipe(gulp.dest(media.imgs));
 });
 
@@ -131,7 +131,7 @@ gulp.task('imgs', function () {
  */
 gulp.task('svgs', function () {
   return gulp.src(media.icons + '/*.svg')
-    .pipe(plugins.svgstore())
+    .pipe($.svgstore())
     .pipe(gulp.dest(media.icons));
 });
 
