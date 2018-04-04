@@ -37,17 +37,11 @@ const css = {
   outputCSSFileLocation: './assets/css/dist'
 };
 
-// Autoprefixer Variables
-// - - - - - - - - - - - - - - - - - -
-const autoprefixerOptions = {
-  browsers: ['last 25 versions']
-};
-
 // Media Variables
 // - - - - - - - - - - - - - - - - - -
 const media = {
-  imgs: 'assets/img',
-  icons: 'assets/icons'
+  imgs: './assets/img',
+  icons: './assets/icons'
 }
 
 /**
@@ -119,7 +113,7 @@ gulp.task('browser-sync', ['scripts', 'styles'], function () {
  * @version v1
  */
 gulp.task('imgs', function () {
-  gulp.src(media.imgs + '/*')
+  gulp.src(media.imgs + '/**/*.{gif,jpg,png,svg,ico}')
     .pipe($.imagemin())
     .pipe(gulp.dest(media.imgs));
 });
