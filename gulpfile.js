@@ -51,11 +51,11 @@ const media = {
  * @version v1
  */
 gulp.task('scripts', function () {
-  fancyLog.info('Watching: ' + js.mainJSFile);
+  fancyLog.info('Merging JS Files..');
   return gulp.src([js.jsFiles, js.mainJSFile])
     .pipe($.babel())
     .on('error', function(err) {
-      console.error('ERROR', err);
+      fancyLog.error('Error: ' + err);
       this.emit('end');
     })
     .pipe($.plumber())
@@ -63,6 +63,7 @@ gulp.task('scripts', function () {
     .pipe(gulp.dest(js.outputJSFileLocation))
     .pipe($.uglify())
     .pipe($.concat(js.outputJSFileCompressed)) // output main JavaScript file w/ uglify
+    .pipe($.size({gzip: true, showFiles: true}))
     .pipe(gulp.dest(js.outputJSFileLocation))
     .pipe(browserSync.reload({ stream: true }))
 });
@@ -87,6 +88,7 @@ gulp.task('styles', function () {
     .pipe(gulp.dest(css.outputCSSFileLocation))
     .pipe($.cleanCss())
     .pipe($.concat(css.outputCSSFileCompressed)) // output main CSS file w/ cleanCSS
+    .pipe($.size({gzip: true, showFiles: true}))
     .pipe(gulp.dest(css.outputCSSFileLocation))
     .pipe(browserSync.reload({ stream: true }));
 });
@@ -120,6 +122,7 @@ gulp.task('imgs', function () {
   fancyLog.info('Compressing Images in: ' + media.imgs);
   gulp.src(media.imgs + '/**/*.{gif,jpg,png,svg,ico}')
     .pipe($.imagemin())
+    .pipe($.size({gzip: true, showFiles: true}))
     .pipe(gulp.dest(media.imgs));
 });
 
@@ -132,6 +135,7 @@ gulp.task('svgs', function () {
   fancyLog.info('Generating icons.svg at: ' + media.icons);
   return gulp.src(media.icons + '/*.svg')
     .pipe($.svgstore())
+    .pipe($.size({gzip: true, showFiles: true}))
     .pipe(gulp.dest(media.icons));
 });
 
