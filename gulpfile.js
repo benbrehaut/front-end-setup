@@ -51,7 +51,7 @@ const media = {
  * @version v1
  */
 gulp.task('scripts', function () {
-  fancyLog.info('Watching:' + js.mainJSFile);
+  fancyLog.info('Watching: ' + js.mainJSFile);
   return gulp.src([js.jsFiles, js.mainJSFile])
     .pipe($.babel())
     .on('error', function(err) {
@@ -73,7 +73,7 @@ gulp.task('scripts', function () {
  * @version v1
  */
 gulp.task('styles', function () {
-  fancyLog.info('Compiling:' + css.mainSassFile);
+  fancyLog.info('Compiling: ' + css.mainSassFile);
   return gulp.src(css.mainSassFile)
     .pipe($.sourcemaps.init())
     .pipe($.sass({
@@ -97,7 +97,7 @@ gulp.task('styles', function () {
  * @version v1
  */
 gulp.task('browser-sync', ['scripts', 'styles'], function () {
-  fancyLog.info('Starting Browser Sync Server at:' + siteURL);
+  fancyLog.info('Starting Browser Sync Server at: ' + siteURL);
   browserSync.init({
     proxy: siteURL,
     files: [
@@ -117,7 +117,7 @@ gulp.task('browser-sync', ['scripts', 'styles'], function () {
  * @version v1
  */
 gulp.task('imgs', function () {
-  fancyLog.info('Compressing Images in:' + media.imgs);
+  fancyLog.info('Compressing Images in: ' + media.imgs);
   gulp.src(media.imgs + '/**/*.{gif,jpg,png,svg,ico}')
     .pipe($.imagemin())
     .pipe(gulp.dest(media.imgs));
@@ -129,7 +129,7 @@ gulp.task('imgs', function () {
  * @version v1
  */
 gulp.task('svgs', function () {
-  fancyLog.info('Generating icons.svg at:' + media.icons);
+  fancyLog.info('Generating icons.svg at: ' + media.icons);
   return gulp.src(media.icons + '/*.svg')
     .pipe($.svgstore())
     .pipe(gulp.dest(media.icons));
