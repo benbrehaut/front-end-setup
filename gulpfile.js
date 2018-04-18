@@ -31,11 +31,11 @@ const js = {
 // Main CSS Variables
 // - - - - - - - - - - - - - - - - - -
 const css = {
-  sassFiles: './assets/scss/**/*.scss',
-  mainSassFile: './assets/scss/style.scss',
-  outputCSSFile: './main.css',
-  outputCSSFileCompressed: './main.min.css',
-  outputCSSFileLocation: './assets/css/dist'
+  sassFiles: 'assets/scss/**/*.scss',
+  mainSassFile: 'assets/scss/style.scss',
+  outputCSSFile: 'main.css',
+  outputCSSFileCompressed: 'main.min.css',
+  outputCSSFileLocation: 'assets/css/dist'
 };
 
 // Media Variables
@@ -79,8 +79,11 @@ gulp.task('styles', function () {
     .pipe($.sourcemaps.init())
     .pipe($.sass({
       includePaths: ['scss'],
+      outputStyle: 'expanded',
       onError: browserSync.notify
     }).on('error', $.sass.logError))
+    .pipe($.sassLint())
+    .pipe($.sassLint.format())
     .pipe($.autoprefixer())
     .pipe($.plumber())
     .pipe($.concat(css.outputCSSFile)) // output main CSS file without cleanCSS
