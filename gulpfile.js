@@ -4,17 +4,10 @@
  * @version v1
  */
 var gulp = require('gulp');
+var gulpLoadPlugins = require('gulp-load-plugins');
+var $ = gulpLoadPlugins();
 var browserSync = require('browser-sync');
-var sass = require('gulp-sass');
-var cleanCSS = require('gulp-clean-css');
-var uglify = require('gulp-uglify');
-var plumber = require('gulp-plumber');
-var concat = require('gulp-concat');
-var imagemin = require('gulp-imagemin');
-var prefix = require('gulp-autoprefixer');
-var svgstore = require('gulp-svgstore');
-var sourcemaps = require('gulp-sourcemaps');
-var babel = require('gulp-babel');
+var fancyLog = require('fancylog');
 
 /**
  * @function variables
@@ -22,27 +15,35 @@ var babel = require('gulp-babel');
  */
 
 // Site URL for Browser Sync
-var siteURL                = 'my-app.uk';
+// - - - - - - - - - - - - - - - - - -
+const siteURL = 'test-theme.uk';
 
 // Main JS Variables
-var jsFiles                = 'assets/js/vendor/**/*.js';
-var mainJSFile             = 'assets/js/scripts.js';
-var outputJSFile           = 'main.js';
-var outputJSFileCompressed = 'main.min.js';
-var outputJSFileLocation   = 'assets/js/dist';
-
-// Main Sass / CSS files
-var sassFiles                = 'assets/scss/**/*.scss';
-var mainSassFile             = 'assets/scss/style.scss';
-var outputCSSFile            = 'main.css';
-var outputCSSFileCompressed  = 'main.min.css';
-var outputCSSFileLocation    = 'assets/css/dist';
-
-// Autoprefixer
-var autoprefixerOptions = {
-  browsers: ['last 25 versions']
+// - - - - - - - - - - - - - - - - - -
+const js = { 
+  jsFiles: './assets/js/vendor/**/*.js',
+  mainJSFile: './assets/js/scripts.js',
+  outputJSFile: './main.js',
+  outputJSFileCompressed: './main.min.js',
+  outputJSFileLocation: './assets/js/dist',
 };
 
+// Main CSS Variables
+// - - - - - - - - - - - - - - - - - -
+const css = {
+  sassFiles: 'assets/scss/**/*.scss',
+  mainSassFile: 'assets/scss/style.scss',
+  outputCSSFile: 'main.css',
+  outputCSSFileCompressed: 'main.min.css',
+  outputCSSFileLocation: 'assets/css/dist'
+};
+
+// Media Variables
+// - - - - - - - - - - - - - - - - - -
+const media = {
+  imgs: './assets/img',
+  icons: './assets/icons'
+}
 
 /**
  * @function scripts
@@ -50,16 +51,20 @@ var autoprefixerOptions = {
  * @version v1
  */
 gulp.task('scripts', function () {
-  return gulp.src([jsFiles, mainJSFile])
-    .pipe(babel({
-      presets: ['env']
-    }))
-    .pipe(plumber())
-    .pipe(concat(outputJSFile))  // output main JavaScript file without uglify
-    .pipe(gulp.dest(outputJSFileLocation))
-    .pipe(uglify())
-    .pipe(concat(outputJSFileCompressed)) // output main JavaScript file w/ uglify
-    .pipe(gulp.dest(outputJSFileLocation))
+  fancyLog.info('Merging JS Files..');
+  return gulp.src([js.jsFiles, js.mainJSFile])
+    .pipe($.babel())
+    .on('error', function(err) {
+      fancyLog.error('Error: ' + err);
+      this.emit('end');
+    })
+    .pipe($.plumber())
+    .pipe($.concat(js.outputJSFile))  // output main JavaScript file without uglify
+    .pipe(gulp.dest(js.outputJSFileLocation))
+    .pipe($.uglify())
+    .pipe($.concat(js.outputJSFileCompressed)) // output main JavaScript file w/ uglify
+    .pipe($.size({gzip: true, showFiles: true}))
+    .pipe(gulp.dest(js.outputJSFileLocation))
     .pipe(browserSync.reload({ stream: true }))
 });
 
@@ -69,20 +74,25 @@ gulp.task('scripts', function () {
  * @version v1
  */
 gulp.task('styles', function () {
-  return gulp.src(mainSassFile)
-    .pipe(sourcemaps.init())
-    .pipe(sass({
+  fancyLog.info('Compiling: ' + css.mainSassFile);
+  return gulp.src(css.mainSassFile)
+    .pipe($.sourcemaps.init())
+    .pipe($.sass({
       includePaths: ['scss'],
+      outputStyle: 'expanded',
       onError: browserSync.notify
-    }).on('error', sass.logError))
-    .pipe(prefix(autoprefixerOptions, { cascade: true }))
-    .pipe(plumber())
-    .pipe(concat(outputCSSFile)) // output main CSS file without cleanCSS
-    .pipe(sourcemaps.write('./maps'))
-    .pipe(gulp.dest(outputCSSFileLocation))
-    .pipe(cleanCSS())
-    .pipe(concat(outputCSSFileCompressed)) // output main CSS file w/ cleanCSS
-    .pipe(gulp.dest(outputCSSFileLocation))
+    }).on('error', $.sass.logError))
+    .pipe($.sassLint())
+    .pipe($.sassLint.format())
+    .pipe($.autoprefixer())
+    .pipe($.plumber())
+    .pipe($.concat(css.outputCSSFile)) // output main CSS file without cleanCSS
+    .pipe($.sourcemaps.write('./maps'))
+    .pipe(gulp.dest(css.outputCSSFileLocation))
+    .pipe($.cleanCss())
+    .pipe($.concat(css.outputCSSFileCompressed)) // output main CSS file w/ cleanCSS
+    .pipe($.size({gzip: true, showFiles: true}))
+    .pipe(gulp.dest(css.outputCSSFileLocation))
     .pipe(browserSync.reload({ stream: true }));
 });
 
@@ -92,6 +102,7 @@ gulp.task('styles', function () {
  * @version v1
  */
 gulp.task('browser-sync', ['scripts', 'styles'], function () {
+  fancyLog.info('Starting Browser Sync Server at: ' + siteURL);
   browserSync.init({
     proxy: siteURL,
     files: [
@@ -99,11 +110,8 @@ gulp.task('browser-sync', ['scripts', 'styles'], function () {
       '**/*.php',
       '*.twig',
       '**/*.twig',
-      '*.html',
-      '**/*.html',
-      'gulpfile.js',
-      outputJSFileLocation + '/*.js',
-      outputCSSFileLocation + '/*.css'
+      js.outputJSFileLocation + '/*.js',
+      css.outputCSSFileLocation + '/*.css'
     ]
   });
 });
@@ -114,20 +122,24 @@ gulp.task('browser-sync', ['scripts', 'styles'], function () {
  * @version v1
  */
 gulp.task('imgs', function () {
-  gulp.src('assets/imgs/*')
-    .pipe(imagemin())
-    .pipe(gulp.dest('assets/imgs'));
+  fancyLog.info('Compressing Images in: ' + media.imgs);
+  gulp.src(media.imgs + '/**/*.{gif,jpg,png,svg,ico}')
+    .pipe($.imagemin())
+    .pipe($.size({gzip: true, showFiles: true}))
+    .pipe(gulp.dest(media.imgs));
 });
 
 /**
- * @function svgstore
+ * @function svgs
  * @description generates and creates svg icons using #symbol
  * @version v1
  */
-gulp.task('svgstore', function () {
-  return gulp.src('assets/icons/*.svg')
-    .pipe(svgstore())
-    .pipe(gulp.dest('assets/icons'));
+gulp.task('svgs', function () {
+  fancyLog.info('Generating icons.svg at: ' + media.icons);
+  return gulp.src(media.icons + '/*.svg')
+    .pipe($.svgstore())
+    .pipe($.size({gzip: true, showFiles: true}))
+    .pipe(gulp.dest(media.icons));
 });
 
 /**
@@ -136,8 +148,9 @@ gulp.task('svgstore', function () {
  * @version v1
  */
 gulp.task('watch', function () {
-  gulp.watch(mainJSFile, ['scripts']);
-  gulp.watch(sassFiles, ['styles']);
+  fancyLog.info('Watching Scss and JS files');
+  gulp.watch(js.mainJSFile, ['scripts']);
+  gulp.watch(css.sassFiles, ['styles']);
 });
 
 /**
