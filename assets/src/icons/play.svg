@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="96" height="96">
+  <title>
+    Play
+  </title>
+  <use fill="#FFF" fill-opacity=".5" xlink:href="#path0_fill"/>
+  <use fill="#FFF" transform="rotate(90 21 48)" xlink:href="#path1_fill"/>
+  <defs>
+    <path id="path0_fill" d="M96 48c0 26.51-21.49 48-48 48S0 74.51 0 48 21.49 0 48 0s48 21.49 48 48z"/>
+    <path id="path1_fill" d="M21 0l18.187 31.5H2.813L21 0z"/>
+  </defs>
+</svg>

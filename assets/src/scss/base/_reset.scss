@@ -1,0 +1,51 @@
+// ============================================================================
+// Base: _reset
+// Reset styling for base elements
+// ============================================================================
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+img {
+  display: inline-block;
+  max-width: 100%;
+  height: auto;
+  -ms-interpolation-mode: bicubic;
+}
+
+audio,
+canvas,
+iframe,
+img,
+svg,
+video {
+  vertical-align: middle;
+}
+
+abbr {
+  cursor: help;
+}
+
+address {
+  font-style: normal;
+}
+
+a,
+input[type="submit"],
+input[type="button"],
+button {
+  cursor: pointer;
+}
+
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}

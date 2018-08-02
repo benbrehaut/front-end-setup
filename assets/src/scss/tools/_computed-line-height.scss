@@ -1,0 +1,11 @@
+// ============================================================================
+// Tools: _computed-line-height
+// Calculates a unitless line height
+// ============================================================================
+
+/// get-line-height
+/// @param {type} $font-size
+/// @param {type} $line-height
+@function get-line-height($font-size, $line-height) {
+  @return $line-height / $font-size;
+}  

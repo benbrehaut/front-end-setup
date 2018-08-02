@@ -2,7 +2,7 @@
   "name": "gulp-setup",
   "version": "1.1.0",
   "description": "Gulp setup for the task runner",
-  "main": "index.php",
+  "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,12 +10,9 @@
     "type": "git",
     "url": "https://github.com/benbrehaut/gulp-setup/"
   },
-  "keywords": [
-    "gulp"
-  ],
   "author": "Ben Brehaut",
   "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.0",

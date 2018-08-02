@@ -1,0 +1,15 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - -
+// Object: _site-warnings
+// - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.site-warning {
+  background-color: $palette-warning;
+  color: $palette-secondary;
+  width: 100%;
+  padding: rem-calc(15);
+  text-align: center;
+
+  p {
+    margin-bottom: 0;
+  }
+}

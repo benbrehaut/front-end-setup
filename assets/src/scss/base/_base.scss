@@ -1,0 +1,191 @@
+// ============================================================================
+// Base: _base
+// Style Base Elements
+// ============================================================================
+
+// ============================================================================
+// Variables
+// ============================================================================
+$body-bg-color: $palette-secondary;
+$body-text-color: $palette-paragraph;
+$body-font: $font-family-normal;
+
+// ============================================================================
+// Global Elements
+// ============================================================================
+html {
+  box-sizing: border-box;
+  font-size: $global-font-size;
+}
+
+body {
+  @include text-rendering('true');
+  -webkit-tap-highlight-color: transparent;
+  background-color: $body-bg-color;
+  font-family: $font-family-normal;
+  font-size: $font-size-primary;
+  color: $body-text-color;
+  line-height: $line-height-base;
+  z-index: index($z-stack, site);
+}
+
+hr {
+  background-color: $palette-border;
+  border: none;
+  height: 1px; 
+  padding: 0;
+  margin-top: rem-calc(16);
+  margin-bottom: rem-calc(16);
+}
+
+table {
+  max-width: 100%;
+  width: 100%;
+  table-layout: fixed;
+  border: 1px solid $palette-border;
+  border-collapse: collapse;
+  margin-bottom: 0;
+
+  td {
+    border: 1px solid $palette-border;
+    padding: 1rem;
+  }
+}
+
+pre {
+  font-size: rem-calc(14);
+  font-family: 'Courier', monospace;
+  background-color: $palette-secondary;
+  padding: 0;
+}
+
+// ============================================================================
+// Typography
+// ============================================================================
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  font-family: $font-family-normal;
+  font-weight: bold;
+  line-height: $line-height-headings;
+  color: $palette-paragraph;
+  margin-bottom: rem-calc(15);
+}
+
+ul {
+  margin: 0 0 rem-calc(10);
+}
+
+p {
+  font-size: inherit;
+  line-height: inherit;
+  margin-top: 0;
+  margin-bottom: rem-calc(25);
+}
+
+strong {
+  font-family: $font-family-normal;
+  font-weight: bold;
+}
+
+em {
+  font-family: $font-family-normal;
+  font-style: italic;
+}
+
+figure {
+  margin: rem-calc(0 0 25);
+}
+
+figcaption {
+  font-size: rem-calc(14);
+  font-style: italic;
+  padding-top: rem-calc(5);
+}
+
+blockquote {
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0;
+  background-color: $palette-secondary;
+
+  p {
+    margin-bottom: rem-calc(10);
+  }
+}
+
+small {
+  font-size: $font-size-small;
+}
+
+// ============================================================================
+// Links / Buttons
+// ============================================================================
+a {
+  color: $palette-anchor;
+  text-decoration: underline;
+
+  @include hocus {
+    text-decoration: none;
+  }
+}
+
+// ============================================================================
+// Form Elemenets
+// ============================================================================
+label {
+  display: block;
+  margin: 0;
+}
+
+select {
+  appearance: none;
+  width: 100%;
+  border-radius: 50px;
+  border: 1px solid rgba($palette-border, 0.1);
+  color: $palette-paragraph;
+  font-size: rem-calc(18);
+  font-family: inherit;
+  padding: rem-calc(13.5 45 13.5 13.5);
+  height: auto;
+  line-height: normal;
+  background-color: $palette-primary;
+  background-image: none;
+  background-clip: padding-box;
+  box-shadow: inset 0px 1px 5px 0px rgba(0, 0, 0, 0.15);
+  transition: border-color 200ms ease-in-out;
+
+  &:focus {
+    outline: none;
+    border: 1px solid $palette-border;
+  }
+}
+
+// IE Fix / Hack
+select::-ms-expand {
+  display: none;
+}
+
+// ============================================================================
+// Highlighting
+// ============================================================================
+::selection {
+  @include selection;
+}
+
+::moz-selection {
+  @include selection;
+}
+
+// ============================================================================
+// iFrame Responivness
+// ============================================================================
+@include breakpoint(small only) {
+  iframe {
+      width: 100%;
+  }
+}
