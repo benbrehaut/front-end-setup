@@ -1,25 +1,23 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - -
-// Tools: _breakpoints
-// Functionality for breakpoints
-// - - - - - - - - - - - - - - - - - - - - - - - - -
+/// ============================================================================
+/// Tools: _breakpoints
+/// Functionality for breakpoints
+/// ============================================================================
 
-// - - - - - - - - - - - - - - - - - - - - - - - - -
-// Sass Warnings
-// - - - - - - - - - - - - - - - - - - - - - - - - -
-@if not map-has-key($breakpoints, small) or not map-has-key($breakpoints, medium) {
-  @error 'Your list of breakpoints (defined in $breakpoints) must include one named "small" and one named "medium".';
+/// ============================================================================
+/// Sass Warnings
+/// ============================================================================
+@if not map-has-key($breakpoints, sm) or not map-has-key($breakpoints, md) {
+  @error 'Your list of breakpoints (defined in $breakpoints) must include one named "sm" and one named "md".';
 }
-@else if map-get($breakpoints, small) != 0 {
-  @error 'Your "small" breakpoint (defined in $breakpoints) must be set to "0".';
+@else if map-get($breakpoints, sm) != 0 {
+  @error 'Your "sm" breakpoint (defined in $breakpoints) must be set to "0".';
 }
 
-/// All of the names in this list will be output as classes in your CSS, like `.small-12`, `.medium-6`, and so on. Each value in this list must also be in the `$breakpoints` map.
-//// @type List
-$breakpoint-classes: (small medium large) !default;
-
+/// ============================================================================
 /// Generates a media query string matching the input value. Refer to the documentation for the `breakpoint()` mixin to see what the possible inputs are.
 /// @param {Keyword|Number} $val [small] - Breakpoint name, or px, rem, or em value to process.
-@function breakpoint($val: small) {
+/// ============================================================================
+@function breakpoint($val: sm) {
   // Size or keyword
   $bp: nth($val, 1);
   // Value for max-width media queries
@@ -43,7 +41,7 @@ $breakpoint-classes: (small medium large) !default;
   @if type-of($bp) == 'string' {
     @if map-has-key($breakpoints, $bp) {
       @if $dir == 'only' or $dir == 'down' {
-        $bp-max: -zf-map-next($breakpoints, $bp);
+        $bp-max: map-next($breakpoints, $bp);
       }
 
       $bp: map-get($breakpoints, $bp);
@@ -56,9 +54,9 @@ $breakpoint-classes: (small medium large) !default;
   }
 
   // Convert any pixel, rem, or unitless value to em
-  $bp: -zf-bp-to-em($bp);
+  $bp: -bp-to-em($bp);
   @if $bp-max {
-    $bp-max: -zf-bp-to-em($bp-max) - (1/16);
+    $bp-max: -bp-to-em($bp-max) - (1/16);
   }
 
   // Conditions to skip media query creation
@@ -111,6 +109,7 @@ $breakpoint-classes: (small medium large) !default;
   @return $str;
 }
 
+/// ============================================================================
 /// Wraps a media query around the content you put inside the mixin. This mixin accepts a number of values:
 ///  - If a string is passed, the mixin will look for it in the `$breakpoints` map, and use a media query there.
 ///  - If a pixel value is passed, it will be converted to an em value using `$global-font-size` as the base.
@@ -118,6 +117,7 @@ $breakpoint-classes: (small medium large) !default;
 ///  - If an em value is passed, the value will be used as-is.
 /// @param {Keyword|Number} $value - Breakpoint name, or px, rem, or em value to process.
 /// @output If the breakpoint is "0px and larger", outputs the content as-is. Otherwise, outputs the content wrapped in a media query.
+/// ============================================================================
 @mixin breakpoint($value) {
   $str: breakpoint($value);
 
@@ -133,27 +133,30 @@ $breakpoint-classes: (small medium large) !default;
     }
   }
 }
-
+/// ============================================================================
 /// Convers the breakpoints map to a URL-encoded string, like this: `key1=value1&key2=value2`. The value is then dropped into the CSS for a special `<meta>` tag, which is read by the Foundation JavaScript. This is how we transfer values from Sass to JavaScript, so they can be defined in one place.
 /// @access private
 /// @param {Map} $map - Map to convert.
 /// @returns {String} A string containing the map's contents.
-@function -zf-bp-serialize($map) {
+/// ============================================================================
+@function serialize($map) {
   $str: '';
   @each $key, $value in $map {
-    $str: $str + $key + '=' + -zf-bp-to-em($value) + '&';
+    $str: $str + $key + '=' + -bp-to-em($value) + '&';
   }
   $str: str-slice($str, 1, -2);
 
   @return $str;
 }
 
-// Find the next key in a map.
+/// ============================================================================
+/// Find the next key in a map.
 /// @access private
 /// @param {Map} $map - Map to traverse.
 /// @param {Mixed} $key - Key to use as a starting point.
 /// @returns {Mixed} The value for the key after `$key`, if `$key` was found. If `$key` was not found, or `$key` was the last value in the map, returns `null`.
-@function -zf-map-next($map, $key) {
+/// ============================================================================
+@function map-next($map, $key) {
   // Store the values of the map as a list, so we can access them with nth
   $values: map-values($map);
 
@@ -179,12 +182,14 @@ $breakpoint-classes: (small medium large) !default;
   }
 }
 
+/// ============================================================================
 /// Get a value for a breakpoint from a responsive config map. If the config map has the key `$value`, the exact breakpoint value is returned. If the config map does *not* have the breakpoint, the value matching the next lowest breakpoint in the config map is returned.
 /// @access private
 /// @param {Map} $map - Input config map.
 /// @param {Keyword} $value - Breakpoint name to use.
 /// @return {Mixed} The corresponding breakpoint value.
-@function -zf-get-bp-val($map, $value) {
+/// ============================================================================
+@function -get-bp-val($map, $value) {
   // Check if the breakpoint name exists globally
   @if not map-has-key($breakpoints, $value) {
     @return null;
@@ -214,26 +219,26 @@ $breakpoint-classes: (small medium large) !default;
   }
 }
 
-@if map-has-key($breakpoints, small) {
-  $small-up: screen;
-  $small-only: unquote('screen and #{breakpoint(small only)}');
+@if map-has-key($breakpoints, sm) {
+  $sm-up: screen;
+  $sm-only: unquote('screen and #{breakpoint(sm only)}');
 }
 
-@if map-has-key($breakpoints, medium) {
-  $medium-up: unquote('screen and #{breakpoint(medium)}');
-  $medium-only: unquote('screen and #{breakpoint(medium only)}');
+@if map-has-key($breakpoints, md) {
+  $md-up: unquote('screen and #{breakpoint(md)}');
+  $md-only: unquote('screen and #{breakpoint(md only)}');
 }
 
-@if map-has-key($breakpoints, large) {
-  $large-up: unquote('screen and #{breakpoint(large)}');
-  $large-only: unquote('screen and #{breakpoint(large only)}');
+@if map-has-key($breakpoints, lg) {
+  $lg-up: unquote('screen and #{breakpoint(lg)}');
+  $lg-only: unquote('screen and #{breakpoint(lg only)}');
 }
 
-@if map-has-key($breakpoints, xlarge) {
-  $xlarge-up: unquote('screen and #{breakpoint(xlarge)}');
-  $xlarge-only: unquote('screen and #{breakpoint(xlarge only)}');
+@if map-has-key($breakpoints, xlg) {
+  $xlg-up: unquote('screen and #{breakpoint(xlg)}');
+  $xlg-only: unquote('screen and #{breakpoint(xlg only)}');
 }
 
-@if map-has-key($breakpoints, xxlarge) {
-  $xxlarge-up: unquote('screen and #{breakpoint(xxlarge)}');
+@if map-has-key($breakpoints, xxlg) {
+  $xxlg-up: unquote('screen and #{breakpoint(xxlg)}');
 }

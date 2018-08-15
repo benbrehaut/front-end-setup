@@ -1,7 +1,7 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - -
-// Settings: _print
-// Includes some default styling for printing
-// - - - - - - - - - - - - - - - - - - - - - - - - -
+/// ============================================================================
+/// Base: _print
+/// Includes some default styling for printing
+/// ============================================================================
 
 @media print {
   *,
@@ -26,9 +26,8 @@
     content: " (" attr(title) ")";
   }
 
-  // Don't show links that are fragment identifiers,
-  // or use the `javascript:` pseudo protocol
-
+  /// Don't show links that are fragment identifiers,
+  /// or use the `javascript:` pseudo protocol
   a[href^="#"]:after,
   a[href^="javascript:"]:after {
     content: "";
@@ -43,9 +42,8 @@
     page-break-inside: avoid;
   }
 
-  // Printing Tables:
-  // http://css-discuss.incutio.com/wiki/Printing_Tables
-
+  /// Printing Tables:
+  /// @link http://css-discuss.incutio.com/wiki/Printing_Tables
   thead {
     display: table-header-group;
   }

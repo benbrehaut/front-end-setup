@@ -1,7 +1,7 @@
-// ============================================================================
-// Base: _reset
-// Reset styling for base elements
-// ============================================================================
+/// ============================================================================
+/// Base: _reset
+/// Reset styling for base elements
+/// ============================================================================
 *,
 *:before,
 *:after {
@@ -42,6 +42,14 @@ input[type="submit"],
 input[type="button"],
 button {
   cursor: pointer;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+    font-family: inherit;
 }
 
 fieldset {

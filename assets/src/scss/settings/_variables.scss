@@ -1,12 +1,13 @@
-// ============================================================================
-// Settings: _variables
-// Contains a number of variables which are used through out the site
-// ============================================================================
+/// ============================================================================
+/// Settings: _variables
+/// Contains a number of variables which are used through out the site
+/// ============================================================================
 
-// ============================================================================
-// Local Colors
-// These should only be referenced in this file
-// ============================================================================
+/// ============================================================================
+/// Local Colors
+/// These should only be referenced in this file
+/// @access private
+/// ============================================================================
 $mercury: #e5e5e5 !default;
 $pampas: #faf9f8 !default;
 $wild-sand: #efece9 !default;
@@ -17,10 +18,11 @@ $red: #b74a48 !default;
 $orange: #ffae00 !default;
 $green: #26b27b !default;
 
-// ============================================================================
-// Global Colors
-// These should be used outside of this file
-// ============================================================================
+/// ============================================================================
+/// Global Colors
+/// These should be used outside of this file
+/// @access public
+/// ============================================================================
 $palette-primary: $pampas;
 $palette-primary--lighter: $wild-sand;
 $palette-secondary: $mercury;
@@ -37,9 +39,11 @@ $palette-anchor: inherit;
 
 $palette-border: $palette-quaternary;
 
-// ============================================================================
-// Typography
-// ============================================================================
+/// ============================================================================
+/// Typography
+/// Typography related variables
+/// @access public
+/// ============================================================================
 $global-font-size: 62.5%;
 $font-size-primary: rem-calc(16);
 
@@ -61,48 +65,48 @@ $font-family-secondary: $font-family-normal;
 $line-height-base: 1.7 !default;
 $line-height-headings: 1.2 !default;
 
-// ============================================================================
-// Forms
-// ============================================================================
+/// ============================================================================
+/// Forms
+/// Form elements variables
+/// @access public
+/// ============================================================================
 $global-form-input-border-color: $palette-border;
 $global-form-input-disabled-color: #e6e6e6;
 
-// ============================================================================
-// Z Index index
-// ============================================================================
+/// ============================================================================
+/// Z Index index
+/// $z-stack runs throuyh a list which ouputs numbered order
+/// @access public
+/// ============================================================================
 $z-stack: site, skipToContent, siteHeader, siteMenu, siteSearchMenu;
 
-// ============================================================================
-// Misc Variables
-// ============================================================================
+/// ============================================================================
+/// Misc Variables
+/// Misc variables which don't have any meaning
+/// @access public
+/// ============================================================================
 $global-border-radius: 0;
 
-// ============================================================================
-// Layout & Grid
-// ============================================================================
-
-// Select the type of grid
-// 'normal' = flexbox, 'legacy' = float
-$global-grid-select: 'normal';
+/// ============================================================================
+/// Layout & Grid
+/// Variables related to the grid
+/// @access private
+/// ============================================================================
 
 // Grid Width
 $global-width: rem-calc(960);
 
-$global-left: left;
-$global-right: right;
-
 // Breakpoint Sizes
-// Pixels are converted to Em
-// - - - - - - - -
 $breakpoints: (
-  small: 0,
-  medium: 770px,
-  large: 1065px,
-  xlarge: 1200px,
-  xxlarge: 1440px,
+  sm: 0,
+  md: 640px,
+  lg: 1024px,
+  xlg: 1200px,
+  xxlg: 1440px,
 ) !default;
 
-$breakpoint-classes: (small medium large) !default;
+// Enabled breakpoints
+$breakpoint-classes: (sm md lg) !default;
 
 // The maximum width of a row.
 $grid-row-width: $global-width;
@@ -114,12 +118,10 @@ $grid-column-count: 12 !default;
 // The amount of space between columns at different screen sizes. 
 // Pixels are converted to Rem
 $grid-column-gutter: (
-  small: 20px,
-  medium: 20px,
+  sm: 30px,
+  md: 40px,
+  lg: 40px
 ) !default;
 
 // If `true`, the last column in a row will align to the opposite edge of the row.
 $grid-column-align-edge: true;
-
-// The highest number of `.x-up` classes available when using the block grid CSS.
-$block-grid-max: 8;

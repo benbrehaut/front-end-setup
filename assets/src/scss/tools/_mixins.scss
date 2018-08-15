@@ -169,10 +169,10 @@
 // ============================================================================
 // Iterates through breakpoints in `$breakpoint-classes`
 // ============================================================================
-@mixin -zf-each-breakpoint($small: true) {
+@mixin each-breakpoint($small: true) {
 	$map: $breakpoint-classes;
 	@if not $small {
-		$map: map-remove($map, small);
+		$map: map-remove($map, sm);
 	}
 	@each $size in $map {
 		$-zf-size: $size !global;

@@ -1,57 +1,61 @@
-// ============================================================================
-// Stylesheet
-// ============================================================================
+/// ============================================================================
+/// Stylesheet
+/// ============================================================================
 @charset 'utf-8';
 
-// ============================================================================
-// Settings
-// Variables and site settings live here
-// ============================================================================
+/// ============================================================================
+/// Settings
+/// Variables and site settings live here
+/// ============================================================================
 @import 'settings/unit',
         'settings/variables';
 
-// ============================================================================
-// Tools
-// Contains functions / mixins to be used, it does not output any code.
-// ============================================================================
+/// ============================================================================
+/// Tools
+/// Contains functions / mixins to be used, it does not output any code.
+/// ============================================================================
 @import 'tools/value',
         'tools/selector',
-        'tools/flex',
+        'tools/computed-line-height',
         'tools/breakpoint',
         'tools/mixins';
 
-// ============================================================================
-// Base
-// Very broad area of styling.
-// ============================================================================
+/// ============================================================================
+/// Vendor
+/// Import vendor files so they can be overwritten
+/// ============================================================================
+@import 'vendor/normalize';
+
+/// ============================================================================
+/// Base
+/// Very broad area of styling.
+/// ============================================================================
 @import 'base/reset',
         'base/base';
 
-// ============================================================================
-// Layout
-// Contains all the information for the grid.
-// ============================================================================
+/// ============================================================================
+/// Layout
+/// Contains all the information for the grid.
+/// ============================================================================
 @import 'layout/row',
         'layout/column',
-        'layout/size',
         'layout/position',
         'layout/gutter',
-        'layout/classes',
-        'layout/layout',
         'layout/flex-grid',
         'layout/grid';
 
-// ============================================================================
-// Objects
-// Objects are designed patterns, from a pattern library or very inique items such as buttons, typography etc. Changing these will affect major parts of the site.
-// ============================================================================
+/// ============================================================================
+/// Objects
+/// Objects are designed patterns, from a pattern library or very inique items 
+/// such as buttons, typography etc. Changing these will affect major parts of the site.
+/// ============================================================================
 @import 'objects/site-warnings',
         'objects/skip-to-content',
-        'objects/page',
-        'objects/book-selector';
+        'objects/site-header',
+        'objects/site-footer';
 
-// ============================================================================
-// Utilities
-// Utilities / helpers which are used throughout the site. This is very specific code bits.
-// ============================================================================
+/// ============================================================================
+/// Utilities
+/// Utilities / helpers which are used throughout the site. This is very specific code bits.
+/// ============================================================================
 @import 'utilities/helpers';

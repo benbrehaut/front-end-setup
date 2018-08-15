@@ -1,17 +1,17 @@
-// - - - - - - - - - - - - - - - - - - - - - - - - -
+/// ============================================================================
 // Layout: _column
 // Functions for the grid columns
-// - - - - - - - - - - - - - - - - - - - - - - - - -
+/// ============================================================================
 
-// - - - - - - - - - - - - - - - - - - - - - - - - -
-// Calculates the width of a column based on a number of factors.
-// @param {Number|List} $columns
-// Width of the column. Accepts multiple values:
-//  - A percentage value will make the column that exact size.
-//  - A single digit will make the column span that number of columns wide, taking into account the column count of the parent row.
-//  - A string of the format "x of y" will make a column that is *x* columns wide, assuming *y* total columns for the parent.
-// @returns {Number} A calculated percentage value.
-// - - - - - - - - - - - - - - - - - - - - - - - - -
+/// ============================================================================
+/// Calculates the width of a column based on a number of factors.
+/// @param {Number|List} $columns
+/// Width of the column. Accepts multiple values:
+///  - A percentage value will make the column that exact size.
+///  - A single digit will make the column span that number of columns wide, taking into account the column count of the parent row.
+///  - A string of the format "x of y" will make a column that is *x* columns wide, assuming *y* total columns for the parent.
+/// @returns {Number} A calculated percentage value.
+/// ============================================================================
 @function grid-column($columns) {
   $width: 0%;
 
@@ -46,11 +46,11 @@
   @return $width;
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - -
-// Creates a grid column.
-// @param {Mixed} $columns [$grid-column-count] - Width of the column. Refer to the `grid-column()` function to see possible values.
-// @param {Number} $gutter [$grid-column-gutter] - Spacing between columns.
-// - - - - - - - - - - - - - - - - - - - - - - - - -
+/// ============================================================================
+/// Creates a grid column.
+/// @param {Mixed} $columns [$grid-column-count] - Width of the column. Refer to the `grid-column()` function to see possible values.
+/// @param {Number} $gutter [$grid-column-gutter] - Spacing between columns.
+/// ============================================================================
 @mixin grid-column(
   $columns: $grid-column-count,
   $gutter: $grid-column-gutter
@@ -83,10 +83,10 @@
   }
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - -
+/// ============================================================================
 // Creates a grid column row. This is the equivalent of adding `.row` and `.column` to the same element.
 // @param {Number} $gutter [$grid-column-gutter] - Width of the gutters on either side of the column row.
-// - - - - - - - - - - - - - - - - - - - - - - - - -
+/// ============================================================================
 @mixin grid-column-row(
   $gutter: $grid-column-gutter
 ) {
@@ -99,20 +99,20 @@
   }
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - -
-// Shorthand for `grid-column()`.
-// @alias grid-column
-// - - - - - - - - - - - - - - - - - - - - - - - - -
+/// ============================================================================
+/// Shorthand for `grid-column()`.
+/// @alias grid-column
+/// ============================================================================
 @function grid-col(
   $columns: $grid-column-count
 ) {
   @return grid-column($columns);
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - -
+/// ============================================================================
 // Shorthand for `grid-column()`.
 // @alias grid-column
-// - - - - - - - - - - - - - - - - - - - - - - - - -
+/// ============================================================================
 @mixin grid-col(
   $columns: $grid-column-count,
   $gutter: $grid-column-gutter
@@ -120,10 +120,10 @@
   @include grid-column($columns, $gutter);
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - -
-// Shorthand for `grid-column-row()`.
-// @alias grid-column-row
-// - - - - - - - - - - - - - - - - - - - - - - - - -
+/// ============================================================================
+/// Shorthand for `grid-column-row()`.
+/// @alias grid-column-row
+/// ============================================================================
 @mixin grid-col-row(
   $gutter: $grid-column-gutter
 ) {
