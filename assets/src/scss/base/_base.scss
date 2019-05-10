@@ -6,8 +6,8 @@
 /// ============================================================================
 /// Variables
 /// ============================================================================
-$body-bg-color: $palette-secondary;
-$body-text-color: $palette-paragraph;
+$body-bg-color: $palette-tertiary;
+$body-text-color: $palette-secondary;
 $body-font: $font-family-normal;
 
 /// ============================================================================
@@ -69,10 +69,11 @@ h4,
 h5,
 h6 {
   margin-top: 0;
-  font-family: $font-family-normal;
-  font-weight: bold;
+  font-family: $font-family-secondary;
+  font-weight: normal;
   color: $palette-paragraph;
   margin-bottom: rem-calc(15);
+  line-height: normal;
 }
 
 ul {
@@ -87,8 +88,8 @@ p {
 }
 
 strong {
-  font-family: $font-family-normal;
-  font-weight: bold;
+  font-family: $font-family-secondary;
+  font-weight: normal;
 }
 
 em {
@@ -136,26 +137,73 @@ a {
 /// ============================================================================
 /// Form Elemenets
 /// ============================================================================
+$input-border-color: #E1E4E6;
+
 label {
   display: block;
   margin: 0;
+}
+
+#{text-inputs()},
+textarea {
+  appearance: none;
+  display: block;
+  line-height: normal;
+  box-shadow: none;
+  border-radius: $global-border-radius;
+  border-width: 2px;
+  border-style: solid;
+  border-color: $input-border-color;
+  color: $palette-secondary;
+  width: 100%;
+  padding: rem-calc(13.5 25 13.5 17);
+  transition: 150ms ease-in-out;
+  cursor: pointer;
+
+  &:valid {
+    border: 2px solid $palette-primary;
+  }
+
+  &:hover {
+    border: 2px solid darken($input-border-color, 10);
+  }
+
+  &:focus {
+    border: 2px solid $palette-secondary;
+    outline: none;
+  }
+
+  &::placeholder {
+    font-family: $font-family-secondary;
+    color: $palette-secondary;
+  }
 }
 
 select {
   appearance: none;
   width: 100%;
   border-radius: 0;
-  border: 1px solid rgba($palette-border, 0.1);
+  border: none;
   color: $palette-paragraph;
   font-size: rem-calc(16);
   font-family: inherit;
   padding: rem-calc(13.5 45 13.5 13.5);
   height: auto;
   line-height: normal;
-  background-color: $palette-primary;
-  background-image: none;
+  background-color: $palette-tertiary;
+  border: 1px solid $palette-tertiary;
+  background-image: url('/assets/src/icons/arrow-down.svg');
+  background-repeat: no-repeat;
+  background-position: calc(100% - 15px) 50%;
   background-clip: padding-box;
   transition: border-color 200ms ease-in-out;
+  box-shadow: $global-box-shadow;
+  border-radius: $global-border-radius;
+  text-transform: uppercase;
+  font-family: $font-family-secondary;
+  min-width: 170px;
+  width: 100%;
+  font-size: rem-calc(14);
 
   &:focus {
     outline: none;
@@ -166,6 +214,11 @@ select {
 // IE Fix / Hack
 select::-ms-expand {
   display: none;
+}
+
+textarea {
+  min-height: rem-calc(209);
+  resize: vertical;
 }
 
 /// ============================================================================

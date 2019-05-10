@@ -1,11 +1,24 @@
+  export default function siteHeader() {
+    const menuBtn = document.querySelector('.js-toggle-menu'),
+    mobileMenu = document.querySelector('.js-site-nav-mobile');
 
-/**
- * site-header.js
- */
+    menuBtn.addEventListener('click', openMenu);
 
-/**
- * Console log out shit
- */
-console.log('In site fasfasfasgsdjkdsadsa')
+    function openMenu(e) {
+      e.preventDefault();
 
-$('body').addClass('fas')
+      this.classList.toggle('is-active');
+      mobileMenu.classList.toggle('is-active');
+    }
+
+    const mobileSecondaryAction = document.querySelectorAll('.js-site-nav-mobile-open-secondary');
+
+    mobileSecondaryAction.forEach(btn => {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        this.classList.toggle('is-active');
+        this.nextElementSibling.classList.toggle('is-active');
+      })
+    });
+  }

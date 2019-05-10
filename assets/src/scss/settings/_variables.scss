@@ -8,34 +8,30 @@
 /// These should only be referenced in this file
 /// @access private
 /// ============================================================================
-$mercury: #e5e5e5 !default;
-$pampas: #faf9f8 !default;
-$wild-sand: #efece9 !default;
-$westar: #e4dfda !default;
-$abbey: #4b5055 !default;
-
-$red: #b74a48 !default;
+$red: #D64541 !default;
 $orange: #ffae00 !default;
-$green: #26b27b !default;
+$green: #1E824C !default;
+$blue: #4F5962;
+$white: #F9F9F9;
+$black: #333333;
 
 /// ============================================================================
 /// Global Colors
 /// These should be used outside of this file
 /// @access public
 /// ============================================================================
-$palette-primary: $pampas;
-$palette-primary--lighter: $wild-sand;
-$palette-secondary: $mercury;
-$palette-tertiary: $westar;
-$palette-quaternary: $abbey;
+$palette-primary: $green;
+$palette-secondary: $blue;
+$palette-tertiary: $white;
+$palette-quaternary: $black;
 
 $palette-error: $red;
 $palette-warning: $orange;
 $palette-success: $green;
 
-$palette-heading: $palette-quaternary;
-$palette-paragraph: $palette-quaternary;
-$palette-anchor: inherit;
+$palette-heading: $palette-secondary;
+$palette-paragraph: $palette-secondary;
+$palette-anchor: $palette-primary;
 
 $palette-border: $palette-quaternary;
 
@@ -57,8 +53,8 @@ $font-size-heading-six: rem-calc(20);
 $font-size-small: 80%;
 
 // Font Famlily
-$font-family-normal: Arial, sans-serif;
-$font-family-secondary: $font-family-normal;
+$font-family-normal: 'GothamRounded Book', Arial, sans-serif;
+$font-family-secondary: 'GothamRounded Medium', Arial Bold, sans-serif;
 
 
 // Line Heights
@@ -78,14 +74,24 @@ $global-form-input-disabled-color: #e6e6e6;
 /// $z-stack runs throuyh a list which ouputs numbered order
 /// @access public
 /// ============================================================================
-$z-stack: site, skipToContent, siteHeader, siteMenu, siteSearchMenu;
+$z-stack: site, skipToContent, siteHeader, siteMenu, modal;
 
 /// ============================================================================
 /// Misc Variables
 /// Misc variables which don't have any meaning
 /// @access public
 /// ============================================================================
-$global-border-radius: 0;
+$global-border-radius: 5px;
+$global-box-shadow: 0px 0px 24px rgba(79, 89, 98, 0.15);
+
+/// ============================================================================
+/// Spacing Variables
+/// Spacing variables with components etc.
+/// @access public
+/// ============================================================================
+$spacing-large: rem-calc(90);
+$spacing-medium: rem-calc(60);
+$spacing-small: rem-calc(47);
 
 /// ============================================================================
 /// Layout & Grid
@@ -94,7 +100,7 @@ $global-border-radius: 0;
 /// ============================================================================
 
 // Grid Width
-$global-width: rem-calc(960);
+$global-width: rem-calc(1300);
 
 // Breakpoint Sizes
 $breakpoints: (

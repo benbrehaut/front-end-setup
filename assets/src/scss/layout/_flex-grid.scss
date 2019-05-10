@@ -161,6 +161,7 @@
 /// ============================================================================
 @mixin flex-grid(
   $row: 'l-wrap',
+  $row-expanded: 'l-wrap--expanded',
   $column: 'l-col',
   $class-prefix: 'l-col--',
   $class-modifier: 'l-col--'
@@ -175,7 +176,7 @@
     }
 
     // Expanded row
-    &.#{$row}--expanded {
+    &.#{$row-expanded} {
       max-width: none;
     }
 
