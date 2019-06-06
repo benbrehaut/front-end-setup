@@ -38,5 +38,19 @@
     "gulp-uglify": "^3.0.0",
     "require-dir": "^1.2.0",
     "webpack-stream": "^5.2.1"
-  }
+  },
+  "browserslist": [
+    "IE >= 8",
+    "Edge >= 12",
+    "chrome >= 33",
+    "firefox >= 33",
+    "safari >= 6",
+    "ios >= 6",
+    "android >= 4.1",
+    "and_chr >= 64",
+    "and_ff >= 57",
+    "samsung >= 4",
+    "opera >= 40",
+    "operamobile >= 10"
+  ]
 }
