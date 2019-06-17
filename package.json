@@ -17,7 +17,6 @@
   "dependencies": {
     "browser-sync": "^2.26.7",
     "fancylog": "^4.0.3",
-    "gulp": "^3.9.0",
     "gulp-autoprefixer": "6.1.0",
     "gulp-babel": "^8.0.0",
     "gulp-clean-css": "^4.2.0",
@@ -56,6 +55,7 @@
     "@babel/preset-env": "^7.4.5",
     "@babel/register": "^7.4.4",
     "babel-loader": "^8.0.6",
-    "babel-preset-env": "^1.7.0"
+    "babel-preset-env": "^1.7.0",
+    "gulp": "^4.0.2"
   }
 }

@@ -1,1 +1,1 @@
-{"version":3,"sources":["style.scss","style.css"],"names":[],"mappings":"AAAA;EACI,qBAAqB;ACCzB","file":"../main.css","sourcesContent":["* {\n    color: red !important;\n}","* {\n  color: red !important;\n}\n"]}
+{"version":3,"sources":["style.scss","style.css"],"names":[],"mappings":"AAAA;EACI,sBAAsB;ACC1B","file":"../main.css","sourcesContent":["* {\n    color: pink !important;\n}","* {\n  color: pink !important;\n}\n"]}
