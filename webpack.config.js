@@ -4,10 +4,10 @@ const paths = require('./variables');
 
 module.exports = {
     entry: [
-      path.resolve(__dirname + paths.js.entryFile)
+      path.resolve(paths.js.entryFile)
     ],
     output: { 
-        path: path.resolve(__dirname + paths.js.outputJSFileLocation),
+        path: path.resolve(paths.js.outputJSFileLocation),
         filename: paths.js.outputJSFileCompressed 
     },
     devtool: "sourcemap",
