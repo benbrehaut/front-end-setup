@@ -13,9 +13,9 @@ import webpack from 'webpack-stream'
 import path from 'path'
 import autoprefixer from 'autoprefixer'
 
-const $ = gulpLoadPlugins();
-
 const paths = require('./variables')
+const $ = gulpLoadPlugins();
+const webpackConfig = require('./webpack.config')
 
 /**
  * scripts
@@ -24,15 +24,20 @@ const paths = require('./variables')
  */
 function scripts(done) {
   log.info(`Compiling JS file from: ${paths.js.entryFile}`);
+
+  webpackConfig.mode = 'development'
+
   src(path.resolve(__dirname, paths.js.entryFile))
     .on('error', function(err) {
       log.error(`Error: ${err}`);
       this.emit('end');
     })
-    .pipe(webpack( require('./webpack.config.js') ))
+    .pipe(webpack({
+      config: webpackConfig
+    }))
     .pipe(dest(paths.js.outputJSFileLocation));
-
   done();
+
   log.info(`Finished compiling: ${paths.js.entryFile}`);
 }
 
@@ -43,6 +48,7 @@ function scripts(done) {
  */
 function styles(done) {
   log.info(`Compiling Scss file from: ${paths.css.mainSassFile}`);
+
   src(paths.css.mainSassFile)
     .pipe($.sourcemaps.init())
     .pipe($.sass({
@@ -55,8 +61,8 @@ function styles(done) {
     .pipe($.concat(paths.css.outputCSSFile)) // output main CSS file without cleanCSS
     .pipe($.sourcemaps.write('./maps'))
     .pipe(dest(paths.css.outputCSSFileLocation));
-
   done();
+
   log.info(`Finished compiling: ${paths.css.mainSassFile}`);
 }
 
@@ -67,13 +73,14 @@ function styles(done) {
  */
 function svgs(done) {
   log.info(`Generating icons.svg from: ${paths.media.icons}`);
+
   src(paths.media.icons + '/*.svg')
     .pipe($.svgmin())
     .pipe($.svgstore())
     .pipe($.size({gzip: true, showFiles: true}))
     .pipe(dest(paths.media.iconsCompressed));
-
   done();  
+
   log.info(`Icons generated at: ${paths.media.iconsCompressed}`)
 }
 
@@ -84,12 +91,13 @@ function svgs(done) {
  */
 function imgs(done) {
   log.info(`Compressing Images in: ${paths.media.imgs}`);
+
   src(paths.media.imgs + '/**/*.{gif,jpg,png,svg,ico}')
     .pipe($.imagemin())
     .pipe($.size({gzip: true, showFiles: true}))
     .pipe(dest(paths.media.imgsCompressed));
-
   done();
+
   log.info(`Images compressed at: ${paths.media.imgsCompressed}`);
 }
 
@@ -99,16 +107,21 @@ function imgs(done) {
  */
 function buildJS(done) {
   log.info(`Building JavaScript File from: ${paths.js.entryFile}`);
+
+  webpackConfig.mode = 'production'
+
   src(path.resolve(__dirname, paths.js.entryFile))
     .on('error', function(err) {
       log.error(`Error: ${err}`);
       this.emit('end');
     })
-    .pipe(webpack( require('./webpack.config.js') ))
+    .pipe(webpack({
+      config: webpackConfig
+    }))
     .pipe(dest(paths.js.outputJSFileLocation))
     .pipe($.size({gzip: true, showFiles: true}));
-
   done();
+
   log.info(`JavaScript file built at: ${paths.js.outputJSFileLocation}`);
 }
 
@@ -118,6 +131,7 @@ function buildJS(done) {
  */
 function buildCSS(done) {
   log.info(`Building Stylesheet file from: ${paths.css.mainSassFile}`);
+
   src(paths.css.mainSassFile)
     .pipe($.sourcemaps.init())
     .pipe($.sass({
@@ -132,8 +146,8 @@ function buildCSS(done) {
     .pipe($.concat(paths.css.outputCSSFileCompressed)) // output main CSS file without cleanCSS
     .pipe(dest(paths.css.outputCSSFileLocation))
     .pipe($.size({gzip: true, showFiles: true}))
-  
   done();
+
   log.info(`Stylesheet file built at: ${paths.css.outputCSSFileLocation}`);
 }
 
@@ -144,6 +158,7 @@ function buildCSS(done) {
  */
 function watchFiles() {
   log.info('Watching CSS and JS files for changes. Enjoy!');
+
   watch(paths.css.sassFiles, series(styles, reloadBrowserSync));
   watch(paths.js.jsFiles, series(scripts, reloadBrowserSync));
 }
@@ -155,6 +170,7 @@ function watchFiles() {
  */
 function runBrowserSync(done) {
   log.info(`Starting BrowserSync server at: ${paths.siteURL}`);
+
   browserSync.init({
     proxy: paths.siteURL,
     files: [
@@ -164,7 +180,6 @@ function runBrowserSync(done) {
       paths.css.outputCSSFileLocation + '/*.css'
     ]
   });
-
   done();
 }
 
@@ -175,8 +190,8 @@ function runBrowserSync(done) {
  */
 function reloadBrowserSync(done) {
   log.info(`Reloading BrowserSync server at: ${paths.siteURL}`);
+
   browserSync.reload();
-  
 	done();
 }
 
