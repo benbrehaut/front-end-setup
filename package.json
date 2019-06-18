@@ -5,6 +5,8 @@
   "main": "index.html",
   "scripts": {
     "develop": "gulp watch --continue",
+    "svgs": "gulp svgs",
+    "imgs": "gulp imgs",
     "build": "gulp build"
   },
   "repository": {
@@ -13,9 +15,7 @@
   },
   "author": "Ben Brehaut",
   "license": "ISC",
-  "dependencies": {
-
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.5",
@@ -28,7 +28,6 @@
     "browser-sync": "^2.26.7",
     "fancylog": "^4.0.3",
     "gulp": "^4.0.2",
-    "gulp-autoprefixer": "6.1.0",
     "gulp-babel": "^8.0.0",
     "gulp-clean-css": "^4.2.0",
     "gulp-concat": "^2.6.1",
@@ -43,6 +42,7 @@
     "gulp-svgmin": "^2.2.0",
     "gulp-svgstore": "^7.0.1",
     "gulp-uglify": "^3.0.2",
+    "node-sass": "^4.12.0",
     "require-dir": "^1.2.0",
     "webpack-stream": "^5.2.1"
   },

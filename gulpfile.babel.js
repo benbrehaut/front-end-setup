@@ -23,6 +23,8 @@ import autoprefixer from 'autoprefixer'
 const paths = require('./variables');
 const $ = gulpLoadPlugins();
 const webpackConfig = require('./webpack.config');
+const sass = $.sass;
+sass.compiler = require('node-sass')
 
 /**
  * scripts
@@ -58,11 +60,11 @@ function styles(done) {
 
   src(paths.css.mainSassFile)
     .pipe($.sourcemaps.init())
-    .pipe($.sass({
+    .pipe(sass({
       includePaths: ['scss'],
       outputStyle: 'expanded',
       onError: browserSync.notify
-    }).on('error', $.sass.logError))
+    }).on('error', sass.logError))
     .pipe($.postcss([ autoprefixer() ]))
     .pipe($.plumber())
     .pipe($.concat(paths.css.outputCSSFile)) // output main CSS file without cleanCSS
@@ -141,10 +143,10 @@ function buildCSS(done) {
 
   src(paths.css.mainSassFile)
     .pipe($.sourcemaps.init())
-    .pipe($.sass({
+    .pipe(sass({
       includePaths: ['scss'],
       outputStyle: 'expanded',
-    }).on('error', $.sass.logError))
+    }).on('error', sass.logError))
     .pipe($.sassLint())
     .pipe($.sassLint.format())
     .pipe($.postcss([ autoprefixer() ]))
