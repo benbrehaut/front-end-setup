@@ -5,8 +5,8 @@
 
 // Dirctories
 const dir = {
-  src: './../assets/src',
-  dist: './../assets/dist'
+  src: './assets/src',
+  dist: './assets/dist'
 };
 
 module.exports = {

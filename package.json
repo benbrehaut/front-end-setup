@@ -1,0 +1,63 @@
+{
+  "name": "gulp-setup",
+  "version": "2.0.0",
+  "description": "Gulp setup for the task runner",
+  "main": "index.html",
+  "scripts": {
+    "develop": "gulp watch --continue",
+    "svgs": "gulp svgs",
+    "imgs": "gulp imgs",
+    "build": "gulp build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benbrehaut/gulp-setup/"
+  },
+  "author": "Ben Brehaut",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/polyfill": "^7.4.4",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/register": "^7.4.4",
+    "autoprefixer": "^9.6.0",
+    "babel-loader": "^8.0.6",
+    "babel-preset-env": "^1.7.0",
+    "browser-sync": "^2.26.7",
+    "fancylog": "^4.0.3",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-clean-css": "^4.2.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-imagemin": "^6.0.0",
+    "gulp-load-plugins": "^1.6.0",
+    "gulp-plumber": "^1.2.1",
+    "gulp-postcss": "^8.0.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-sass-lint": "^1.4.0",
+    "gulp-size": "^3.0.0",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-svgmin": "^2.2.0",
+    "gulp-svgstore": "^7.0.1",
+    "gulp-uglify": "^3.0.2",
+    "node-sass": "^4.12.0",
+    "require-dir": "^1.2.0",
+    "webpack-stream": "^5.2.1"
+  },
+  "browserslist": [
+    "IE >= 8",
+    "Edge >= 12",
+    "chrome >= 33",
+    "firefox >= 33",
+    "safari >= 6",
+    "ios >= 6",
+    "android >= 4.1",
+    "and_chr >= 64",
+    "and_ff >= 57",
+    "samsung >= 4",
+    "opera >= 40",
+    "operamobile >= 10"
+  ]
+}
