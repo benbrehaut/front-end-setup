@@ -1,15 +1,14 @@
 /**
  * gulp
  * @description the main gulp file
- * @version v1
+ * @version v2
  */
 'use strict';
 
-import gulp from 'gulp'
+import { src, dest, task, watch, series, parallel } from 'gulp'
 import gulpLoadPlugins from 'gulp-load-plugins'
 import browserSync from 'browser-sync'
-import log from 'fancylog'
-import requireDir from 'require-dir'
+import log from 'fancy-log'
 import webpack from 'webpack-stream'
 import path from 'path'
 
@@ -19,30 +18,31 @@ const paths = require('./variables')
 
 /**
  * scripts
- * @description pipes our vendor JS files, main JS file out and minifies it
- * @version v1
+ * @description generates the source JavaScript files into one JavaScript file
+ * @version v2
  */
 function scripts(done) {
-  // log.info('Building JS File..');
-  gulp.src(path.resolve(__dirname, paths.js.entryFile))
+  log.info(`Compiling JS file from: ${paths.js.entryFile}`);
+  src(path.resolve(__dirname, paths.js.entryFile))
     .on('error', function(err) {
-      // log.error('Error: ' + err);
+      log.error(`Error: ${err}`);
       this.emit('end');
     })
     .pipe(webpack( require('./webpack.config.js') ))
-    .pipe(gulp.dest(paths.js.outputJSFileLocation));
+    .pipe(dest(paths.js.outputJSFileLocation));
 
   done();
+  log.info(`Finished compiling: ${paths.js.entryFile}`);
 }
 
 /**
- * sass
- * @description compiles our static .scss files into one main .css file
- * @version v1
+ * styles
+ * @description compiles the source Scss files into one CSS file
+ * @version v2
  */
 function styles(done) {
-  // log.info('Compiling: ' + paths.css.mainSassFile);
-  gulp.src(paths.css.mainSassFile)
+  log.info(`Compiling Scss file from: ${paths.css.mainSassFile}`);
+  src(paths.css.mainSassFile)
     .pipe($.sourcemaps.init())
     .pipe($.sass({
       includePaths: ['scss'],
@@ -53,67 +53,71 @@ function styles(done) {
     .pipe($.plumber())
     .pipe($.concat(paths.css.outputCSSFile)) // output main CSS file without cleanCSS
     .pipe($.sourcemaps.write('./maps'))
-    .pipe(gulp.dest(paths.css.outputCSSFileLocation));
+    .pipe(dest(paths.css.outputCSSFileLocation));
 
   done();
+  log.info(`Finished compiling: ${paths.css.mainSassFile}`);
 }
 
 /**
  * svgs
- * @description generates and creates svg icons using #symbol
- * @version v1
+ * @description generates and creates svg icons using #symbol so that we can easily include svg icons into the webpage
+ * @version v2
  */
 function svgs(done) {
-  // log.info('Generating icons.svg at: ' + paths.media.icons);
-  gulp.src(paths.media.icons + '/*.svg')
+  log.info(`Generating icons.svg from: ${paths.media.icons}`);
+  src(paths.media.icons + '/*.svg')
     .pipe($.svgmin())
     .pipe($.svgstore())
     .pipe($.size({gzip: true, showFiles: true}))
-    .pipe(gulp.dest(paths.media.iconsCompressed));
+    .pipe(dest(paths.media.iconsCompressed));
 
   done();  
+  log.info(`Icons generated at: ${paths.media.iconsCompressed}`)
 }
 
 /**
- * @function imgs
- * @description compresses static images
+ * imgs
+ * @description compresses images
  * @version v1
  */
 function imgs(done) {
-  // log.info('Compressing Images in: ' + paths.media.imgs);
-  gulp.src(paths.media.imgs + '/**/*.{gif,jpg,png,svg,ico}')
+  log.info(`Compressing Images in: ${paths.media.imgs}`);
+  src(paths.media.imgs + '/**/*.{gif,jpg,png,svg,ico}')
     .pipe($.imagemin())
     .pipe($.size({gzip: true, showFiles: true}))
-    .pipe(gulp.dest(paths.media.imgsCompressed));
+    .pipe(dest(paths.media.imgsCompressed));
 
   done();
+  log.info(`Images compressed at: ${paths.media.imgsCompressed}`);
 }
 
 /**
- * Build JS
- * @description Minify and conat JS Files
+ * buildJS
+ * @description generates the source JavaScript files into one JavaScript file ready for production
  */
 function buildJS(done) {
-  // log.info('Building JS File..');
-  gulp.src(path.resolve(__dirname, paths.js.entryFile))
+  log.info(`Building JavaScript File from: ${paths.js.entryFile}`);
+  src(path.resolve(__dirname, paths.js.entryFile))
     .on('error', function(err) {
-      // log.error('Error: ' + err);
+      log.error(`Error: ${err}`);
       this.emit('end');
     })
     .pipe(webpack( require('./webpack.config.js') ))
-    .pipe(gulp.dest(paths.js.outputJSFileLocation))
+    .pipe(dest(paths.js.outputJSFileLocation))
     .pipe($.size({gzip: true, showFiles: true}));
 
   done();
+  log.info(`JavaScript file built at: ${paths.js.outputJSFileLocation}`);
 }
 
 /**
- * Build CSS
- * @description Minify and conat Scss Files into one CSS File
+ * buildCSS
+ * @description compiles the source Scss files into one CSS file ready for production. Also runs SassLint
  */
 function buildCSS(done) {
-  // log.info('Building: ' + paths.css.mainSassFile);
-  gulp.src(paths.css.mainSassFile)
+  log.info(`Building Stylesheet file from: ${paths.css.mainSassFile}`);
+  src(paths.css.mainSassFile)
     .pipe($.sourcemaps.init())
     .pipe($.sass({
       includePaths: ['scss'],
@@ -125,30 +129,31 @@ function buildCSS(done) {
     .pipe($.plumber())
     .pipe($.cleanCss())
     .pipe($.concat(paths.css.outputCSSFileCompressed)) // output main CSS file without cleanCSS
-    .pipe(gulp.dest(paths.css.outputCSSFileLocation))
+    .pipe(dest(paths.css.outputCSSFileLocation))
     .pipe($.size({gzip: true, showFiles: true}))
   
   done();
+  log.info(`Stylesheet file built at: ${paths.css.outputCSSFileLocation}`);
 }
 
 /**
- * watch
+ * watchFiles
  * @description watchs the .js and .scss files for changes
  * @version v1
  */
 function watchFiles() {
-  //   // log.info('Watching Scss and JS files');
-  gulp.watch(paths.css.sassFiles, gulp.series(styles, reloadBrowserSync));
-  gulp.watch(paths.js.jsFiles, gulp.series(scripts, reloadBrowserSync));
+  log.info('Watching CSS and JS files for changes. Enjoy!');
+  watch(paths.css.sassFiles, series(styles, reloadBrowserSync));
+  watch(paths.js.jsFiles, series(scripts, reloadBrowserSync));
 }
 
 /**
- * browser-sync
- * @description generates BrowserSync for watching and refreshing page
- * @version v1
+ * runBrowserSync
+ * @description generates BrowserSync session for watching and refreshing page
+ * @version v2
  */
 function runBrowserSync(done) {
-  // log.info('Starting Browser Sync Server at: ' + paths.siteURL);
+  log.info(`Starting BrowserSync server at: ${paths.siteURL}`);
   browserSync.init({
     proxy: paths.siteURL,
     files: [
@@ -162,29 +167,31 @@ function runBrowserSync(done) {
   done();
 }
 
+/**
+ * reloadBrowserSync
+ * @description refreshes browserSync session
+ * @version v2
+ */
 function reloadBrowserSync(done) {
-	browserSync.reload();
+  log.info(`Reloading BrowserSync server at: ${paths.siteURL}`);
+  browserSync.reload();
+  
 	done();
 }
 
 /**
- * build
- * @description minifies assets
- * @version v1
+ * tasks
+ * @description list of gulp tasks that are available to run
+ * @version v2
  */
+task('scripts', scripts);
+task('styles', styles);
+task('imgs', imgs);
+task('svgs', svgs);
 
-/**
- * default
- * @description runs the default task, which is browser sync and watch tasks
- * @version v1
- */
-gulp.task('scripts', scripts);
-gulp.task('styles', styles);
-gulp.task('imgs', imgs);
-gulp.task('svgs', svgs);
+task('build:css', buildCSS);
+task('build:js', buildJS);
+task('build', parallel(buildJS, buildCSS));
 
-gulp.task('watch', gulp.series(watchFiles, runBrowserSync));
-
-gulp.task('build', gulp.parallel(buildJS, buildCSS));
-
-gulp.task('default', gulp.parallel(scripts, styles, runBrowserSync));
+task('watch', series(watchFiles, runBrowserSync));
+task('default', parallel(scripts, styles, runBrowserSync));
