@@ -5,7 +5,14 @@
  */
 'use strict';
 
-import { src, dest, task, watch, series, parallel } from 'gulp'
+import { 
+  src, 
+  dest, 
+  task, 
+  watch, 
+  series, 
+  parallel 
+} from 'gulp'
 import gulpLoadPlugins from 'gulp-load-plugins'
 import browserSync from 'browser-sync'
 import log from 'fancy-log'
@@ -13,9 +20,9 @@ import webpack from 'webpack-stream'
 import path from 'path'
 import autoprefixer from 'autoprefixer'
 
-const paths = require('./variables')
+const paths = require('./variables');
 const $ = gulpLoadPlugins();
-const webpackConfig = require('./webpack.config')
+const webpackConfig = require('./webpack.config');
 
 /**
  * scripts
@@ -210,4 +217,4 @@ task('build:js', buildJS);
 task('build', parallel(buildJS, buildCSS));
 
 task('watch', series(watchFiles, runBrowserSync));
-task('default', parallel(scripts, styles, runBrowserSync));
+task('default', parallel(scripts, styles));
