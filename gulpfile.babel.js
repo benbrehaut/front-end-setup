@@ -93,7 +93,7 @@ function imgs(done) {
  * Build JS
  * @description Minify and conat JS Files
  */
-function buildJS() {
+function buildJS(done) {
   // log.info('Building JS File..');
   gulp.src(path.resolve(__dirname, paths.js.entryFile))
     .on('error', function(err) {
@@ -103,6 +103,8 @@ function buildJS() {
     .pipe(webpack( require('./webpack.config.js') ))
     .pipe(gulp.dest(paths.js.outputJSFileLocation))
     .pipe($.size({gzip: true, showFiles: true}));
+
+  done();
 }
 
 /**
