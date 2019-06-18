@@ -11,6 +11,7 @@ import browserSync from 'browser-sync'
 import log from 'fancy-log'
 import webpack from 'webpack-stream'
 import path from 'path'
+import autoprefixer from 'autoprefixer'
 
 const $ = gulpLoadPlugins();
 
@@ -49,7 +50,7 @@ function styles(done) {
       outputStyle: 'expanded',
       onError: browserSync.notify
     }).on('error', $.sass.logError))
-    .pipe($.autoprefixer())
+    .pipe($.postcss([ autoprefixer() ]))
     .pipe($.plumber())
     .pipe($.concat(paths.css.outputCSSFile)) // output main CSS file without cleanCSS
     .pipe($.sourcemaps.write('./maps'))
@@ -125,7 +126,7 @@ function buildCSS(done) {
     }).on('error', $.sass.logError))
     .pipe($.sassLint())
     .pipe($.sassLint.format())
-    .pipe($.autoprefixer())
+    .pipe($.postcss([ autoprefixer() ]))
     .pipe($.plumber())
     .pipe($.cleanCss())
     .pipe($.concat(paths.css.outputCSSFileCompressed)) // output main CSS file without cleanCSS
