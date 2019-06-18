@@ -59,9 +59,5 @@
     "samsung >= 4",
     "opera >= 40",
     "operamobile >= 10"
-  ],
-  "dir": {
-    "src": "./assets/src",
-    "dist": "./assets/dist"
-  }
+  ]
 }
