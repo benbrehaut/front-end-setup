@@ -1,6 +1,5 @@
 /**
- * gulp
- * @description the main gulp file
+ * the main gulp file
  * @version v2
  */
 'use strict';
@@ -27,9 +26,9 @@ const sass = $.sass;
 sass.compiler = require('node-sass')
 
 /**
- * scripts
- * @description generates the source JavaScript files into one JavaScript file
- * @version v2
+ * generates the source JavaScript files into one JavaScript file
+ * @param {*} done 
+ * @version 2
  */
 function scripts(done) {
   log.info(`Compiling JS file from: ${paths.js.entryFile}`);
@@ -51,9 +50,9 @@ function scripts(done) {
 }
 
 /**
- * styles
- * @description compiles the source Scss files into one CSS file
- * @version v2
+ * compiles the source Scss files into one CSS file
+ * @param {*} done 
+ * @version 2
  */
 function styles(done) {
   log.info(`Compiling Scss file from: ${paths.css.mainSassFile}`);
@@ -76,9 +75,9 @@ function styles(done) {
 }
 
 /**
- * svgs
- * @description generates and creates svg icons using #symbol so that we can easily include svg icons into the webpage
- * @version v2
+ * generates and creates svg icons using #symbol so that we can easily include svg icons into the webpage
+ * @param {*} done 
+ * @version 2
  */
 function svgs(done) {
   log.info(`Generating icons.svg from: ${paths.media.icons}`);
@@ -94,9 +93,9 @@ function svgs(done) {
 }
 
 /**
- * imgs
- * @description compresses images
- * @version v1
+ * compresses images
+ * @param {*} done 
+ * @version 2
  */
 function imgs(done) {
   log.info(`Compressing Images in: ${paths.media.imgs}`);
@@ -111,8 +110,9 @@ function imgs(done) {
 }
 
 /**
- * buildJS
- * @description generates the source JavaScript files into one JavaScript file ready for production
+ * generates the source JavaScript files into one JavaScript file ready for production
+ * @param {*} done 
+ * @version 2
  */
 function buildJS(done) {
   log.info(`Building JavaScript File from: ${paths.js.entryFile}`);
@@ -135,8 +135,9 @@ function buildJS(done) {
 }
 
 /**
- * buildCSS
- * @description compiles the source Scss files into one CSS file ready for production. Also runs SassLint
+ * compiles the source Scss files into one CSS file ready for production. Also runs SassLint
+ * @param {*} done 
+ * @version 2
  */
 function buildCSS(done) {
   log.info(`Building Stylesheet file from: ${paths.css.mainSassFile}`);
@@ -161,9 +162,8 @@ function buildCSS(done) {
 }
 
 /**
- * watchFiles
- * @description watchs the .js and .scss files for changes
- * @version v1
+ * watches the .js and .scss files for changes
+ * @version 2
  */
 function watchFiles() {
   log.info('Watching CSS and JS files for changes. Enjoy!');
@@ -173,9 +173,9 @@ function watchFiles() {
 }
 
 /**
- * runBrowserSync
- * @description generates BrowserSync session for watching and refreshing page
- * @version v2
+ * generates BrowserSync session for watching and refreshing page
+ * @param {*} done
+ * @version 2 
  */
 function runBrowserSync(done) {
   log.info(`Starting BrowserSync server at: ${paths.siteURL}`);
@@ -193,9 +193,9 @@ function runBrowserSync(done) {
 }
 
 /**
- * reloadBrowserSync
- * @description refreshes browserSync session
- * @version v2
+ * reloads the browser sync session
+ * @param {*} done 
+ * @version 2
  */
 function reloadBrowserSync(done) {
   log.info(`Reloading BrowserSync server at: ${paths.siteURL}`);
@@ -205,8 +205,7 @@ function reloadBrowserSync(done) {
 }
 
 /**
- * tasks
- * @description list of gulp tasks that are available to run
+ * list of gulp tasks that are available to run
  * @version v2
  */
 task('scripts', scripts);
