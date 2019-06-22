@@ -18,6 +18,7 @@ import log from 'fancy-log'
 import webpack from 'webpack-stream'
 import path from 'path'
 import autoprefixer from 'autoprefixer'
+import customProperties from 'postcss-custom-properties'
 
 const paths = require('./variables');
 const $ = gulpLoadPlugins();
@@ -64,7 +65,7 @@ function styles(done) {
       outputStyle: 'expanded',
       onError: browserSync.notify
     }).on('error', sass.logError))
-    .pipe($.postcss([ autoprefixer() ]))
+    .pipe($.postcss([ autoprefixer(), customProperties() ]))
     .pipe($.plumber())
     .pipe($.concat(paths.css.outputCSSFile)) // output main CSS file without cleanCSS
     .pipe($.sourcemaps.write('./maps'))
@@ -150,7 +151,7 @@ function buildCSS(done) {
     }).on('error', sass.logError))
     .pipe($.sassLint())
     .pipe($.sassLint.format())
-    .pipe($.postcss([ autoprefixer() ]))
+    .pipe($.postcss([ autoprefixer(), customProperties() ]))
     .pipe($.plumber())
     .pipe($.cleanCss())
     .pipe($.concat(paths.css.outputCSSFileCompressed)) // output main CSS file without cleanCSS
