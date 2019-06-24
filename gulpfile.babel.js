@@ -181,10 +181,26 @@ function watchFiles() {
 function runBrowserSync(done) {
   log.info(`Starting BrowserSync...`);
 
-  browserSync.init({
-    proxy: paths.browserSync.siteURL,
-    files: paths.browserSync.files,
-  });
+  // if proxy mode
+  if (paths.browserSync.hasProxy) {
+    browserSync.init({
+      proxy: paths.browserSync.siteURL,
+      files: paths.browserSync.files,
+    });
+  }
+  // else if local server
+  else if (paths.browserSync.localServer) {
+    browserSync.init({
+      server: {
+          baseDir: paths.browserSync.baseDir
+      },
+      files: paths.browserSync.files
+    });
+  }
+  else {
+    throw Error('Please enter a proxy or a point to local files.');
+    done();
+  }
   done();
 }
 

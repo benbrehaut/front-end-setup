@@ -9,23 +9,29 @@
  */
 const dir = {
   src: './assets/src',
-  dist: './assets/dist'
+  dist: './assets/dist',
+  views: './templates'
 };
 
 module.exports = {
-  // Site URL for Browser Sync
+  // BrowserSync
   browserSync: {
     proxy: true,
     siteURL: 'www.your-url.com',
     files: [
-      './templates/*.html', 
-      './templates/**/*.html',
+      `${dir.views}/*.html`,
+      `${dir.views}/**/*.html`,
       `${dir.dist}/js`,
       `${dir.dist}/css`
     ],
+    localServer: false,
+    baseDir: [
+      dir.views,
+      dir.dist
+    ]
   },
 
-  // Main JS Variables
+  // JS Variables
   js: { 
     jsFiles: `${dir.src}/js/**/*.js`,
     entryFile: `${dir.src}/js/main.js`,
@@ -33,7 +39,7 @@ module.exports = {
     outputJSFileLocation: `${dir.dist}/js`,
   },
 
-  // Main CSS Variables
+  // CSS Variables
   css: {
     sassFiles: `${dir.src}/scss/**/*.scss`,
     mainSassFile: `${dir.src}/scss/style.scss`,
