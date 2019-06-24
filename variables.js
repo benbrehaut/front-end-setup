@@ -16,7 +16,7 @@ const dir = {
 module.exports = {
   // BrowserSync
   browserSync: {
-    proxy: true,
+    proxy: true, // if you have a server set up on your machine (MAMP, Vagrant etc.)
     siteURL: 'www.your-url.com',
     files: [
       `${dir.views}/*.html`,
@@ -24,7 +24,7 @@ module.exports = {
       `${dir.dist}/js`,
       `${dir.dist}/css`
     ],
-    localServer: false,
+    localServer: false, // if you want to use the in-built browserSync server
     baseDir: [
       dir.views,
       dir.dist
