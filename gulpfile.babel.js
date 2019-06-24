@@ -179,7 +179,7 @@ function watchFiles() {
  * @version 2 
  */
 function runBrowserSync(done) {
-  log.info(`Starting BrowserSync server at: ${paths.siteURL}`);
+  log.info(`Starting BrowserSync...`);
 
   browserSync.init({
     proxy: paths.browserSync.siteURL,
@@ -194,7 +194,7 @@ function runBrowserSync(done) {
  * @version 2
  */
 function reloadBrowserSync(done) {
-  log.info(`Reloading BrowserSync server at: ${paths.siteURL}`);
+  log.info(`Reloading BrowserSync...`);
 
   browserSync.reload({ stream: true });
 	done();
