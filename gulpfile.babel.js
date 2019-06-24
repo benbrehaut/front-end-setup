@@ -201,7 +201,7 @@ function runBrowserSync(done) {
 function reloadBrowserSync(done) {
   log.info(`Reloading BrowserSync server at: ${paths.siteURL}`);
 
-  browserSync.reload();
+  browserSync.reload({ stream: true });
 	done();
 }
 
@@ -218,5 +218,5 @@ task('build:css', buildCSS);
 task('build:js', buildJS);
 task('build', parallel(buildJS, buildCSS));
 
-task('watch', series(watchFiles, runBrowserSync));
+task('watch', series(runBrowserSync, watchFiles));
 task('default', parallel(scripts, styles));
