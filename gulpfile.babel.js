@@ -182,13 +182,8 @@ function runBrowserSync(done) {
   log.info(`Starting BrowserSync server at: ${paths.siteURL}`);
 
   browserSync.init({
-    proxy: paths.siteURL,
-    files: [
-      '../templates/*.twig',
-      '../templates/**/*.twig',
-      paths.js.outputJSFileLocation + '/*.js',
-      paths.css.outputCSSFileLocation + '/*.css'
-    ]
+    proxy: paths.browserSync.siteURL,
+    files: paths.browserSync.files,
   });
   done();
 }

@@ -14,7 +14,16 @@ const dir = {
 
 module.exports = {
   // Site URL for Browser Sync
-  siteURL: 'www.your-url.com',
+  browserSync: {
+    proxy: true,
+    siteURL: 'www.your-url.com',
+    files: [
+      './templates/*.html', 
+      './templates/**/*.html',
+      `${dir.dist}/js`,
+      `${dir.dist}/css`
+    ],
+  },
 
   // Main JS Variables
   js: { 
