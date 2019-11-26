@@ -6,7 +6,7 @@
     <img alt="Twitter: BenBrehaut" src="https://img.shields.io/twitter/follow/BenBrehaut.svg?style=social" target="_blank" />
 </a>
 
-> Gulp file starter that can be used on any sort of project. It comes built with Scss, Babel, SVG icon creation, Image minification and BrowserSync.
+> Gulp file starter that can be used on any sort of project. It comes built with Scss, Critical CSS generation, Babel to allow use of ES6 or new standards of JavaScript, SVG icon creation, Image minification and BrowserSync.
 
 ## Prerequisites
 - npm >= 5.0.0
@@ -19,7 +19,7 @@ npm install
 ````
 
 ## Usage
-A list of variables can be found in the ``variables.js`` file where you can adjust to what you need.
+A list of variables can be found in the ``variables.js.base`` file where you can adjust to what you need. Copy this file and rename it to ``variables.js`` to use the task runner.
 
 ### To start developing
 ````bash

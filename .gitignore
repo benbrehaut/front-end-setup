@@ -3,6 +3,8 @@ node_modules/
 assets/
 templates/
 
+variables.js
+
 .DS_Store
 *.css.map
 *.js.map
