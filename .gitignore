@@ -1,6 +1,7 @@
 # Dependency directories
 node_modules/
 assets/
+templates/
 
 .DS_Store
 *.css.map

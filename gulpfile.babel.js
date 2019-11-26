@@ -27,6 +27,7 @@ const sass = $.sass;
 sass.compiler = require('node-sass')
 
 /**
+ * scripts
  * generates the source JavaScript files into one JavaScript file
  * @param {*} done 
  * @version 2
@@ -36,7 +37,7 @@ function scripts(done) {
 
   webpackConfig.mode = 'development'
 
-  src(path.resolve(__dirname, paths.js.entryFile))
+  return src(path.resolve(__dirname, paths.js.entryFile))
     .on('error', function(err) {
       log.error(`Error: ${err}`);
       this.emit('end');
@@ -44,21 +45,23 @@ function scripts(done) {
     .pipe(webpack({
       config: webpackConfig
     }))
-    .pipe(dest(paths.js.outputJSFileLocation));
-  done();
-
-  log.info(`Finished compiling: ${paths.js.entryFile}`);
+    .pipe(dest(paths.js.outputJSFileLocation))
+    .on('end', () => {
+      log.info(`Finished compiling JS Files`);
+      done();
+    });
 }
 
 /**
- * compiles the source Scss files into one CSS file
+ * styles
+ * compiles the source Scss files into CSS files
  * @param {*} done 
  * @version 2
  */
 function styles(done) {
-  log.info(`Compiling Scss file from: ${paths.css.mainSassFile}`);
+  log.info(`Compiling Scss`);
 
-  src(paths.css.mainSassFile)
+  return src([paths.css.mainSassFile, paths.css.criticalSassFile])
     .pipe($.sourcemaps.init())
     .pipe(sass({
       includePaths: ['scss'],
@@ -67,15 +70,16 @@ function styles(done) {
     }).on('error', sass.logError))
     .pipe($.postcss([ autoprefixer(), customProperties() ]))
     .pipe($.plumber())
-    .pipe($.concat(paths.css.outputCSSFile)) // output main CSS file without cleanCSS
     .pipe($.sourcemaps.write('./maps'))
-    .pipe(dest(paths.css.outputCSSFileLocation));
-  done();
-
-  log.info(`Finished compiling: ${paths.css.mainSassFile}`);
+    .pipe(dest(paths.css.outputCSSFileLocation))
+    .on('end', () => {
+      log.info(`Finished compiling Scss`);
+      done();
+    });
 }
 
 /**
+ * svgs
  * generates and creates svg icons using #symbol so that we can easily include svg icons into the webpage
  * @param {*} done 
  * @version 2
@@ -83,17 +87,19 @@ function styles(done) {
 function svgs(done) {
   log.info(`Generating icons.svg from: ${paths.media.icons}`);
 
-  src(paths.media.icons + '/*.svg')
+  return src(paths.media.icons + '/*.svg')
     .pipe($.svgmin())
     .pipe($.svgstore())
     .pipe($.size({gzip: true, showFiles: true}))
-    .pipe(dest(paths.media.iconsCompressed));
-  done();  
-
-  log.info(`Icons generated at: ${paths.media.iconsCompressed}`)
+    .pipe(dest(paths.media.iconsCompressed))
+    .on('end', () => {
+      log.info(`Icons generated at: ${paths.media.iconsCompressed}`)
+      done();  
+    })
 }
 
 /**
+ * imgs
  * compresses images
  * @param {*} done 
  * @version 2
@@ -101,16 +107,18 @@ function svgs(done) {
 function imgs(done) {
   log.info(`Compressing Images in: ${paths.media.imgs}`);
 
-  src(paths.media.imgs + '/**/*.{gif,jpg,png,svg,ico}')
+  return src(paths.media.imgs + '/**/*.{gif,jpg,png,svg,ico}')
     .pipe($.imagemin())
     .pipe($.size({gzip: true, showFiles: true}))
-    .pipe(dest(paths.media.imgsCompressed));
-  done();
-
-  log.info(`Images compressed at: ${paths.media.imgsCompressed}`);
+    .pipe(dest(paths.media.imgsCompressed))
+    .on('end', () => {
+      log.info(`Images compressed at: ${paths.media.imgsCompressed}`);
+      done();
+    });
 }
 
 /**
+ * buildJS
  * generates the source JavaScript files into one JavaScript file ready for production
  * @param {*} done 
  * @version 2
@@ -120,7 +128,7 @@ function buildJS(done) {
 
   webpackConfig.mode = 'production'
 
-  src(path.resolve(__dirname, paths.js.entryFile))
+  return src(path.resolve(__dirname, paths.js.entryFile))
     .on('error', function(err) {
       log.error(`Error: ${err}`);
       this.emit('end');
@@ -129,21 +137,23 @@ function buildJS(done) {
       config: webpackConfig
     }))
     .pipe(dest(paths.js.outputJSFileLocation))
-    .pipe($.size({gzip: true, showFiles: true}));
-  done();
-
-  log.info(`JavaScript file built at: ${paths.js.outputJSFileLocation}`);
+    .pipe($.size({gzip: true, showFiles: true}))
+    .on('end', () => {
+      log.info(`JavaScript file built at: ${paths.js.outputJSFileLocation}`);
+      done();
+    })
 }
 
 /**
- * compiles the source Scss files into one CSS file ready for production. Also runs SassLint
+ * buildCSS
+ * compiles the source Scss files into CSS files ready for production. Also runs SassLint
  * @param {*} done 
  * @version 2
  */
 function buildCSS(done) {
-  log.info(`Building Stylesheet file from: ${paths.css.mainSassFile}`);
+  log.info(`Building Stylesheet files`);
 
-  src(paths.css.mainSassFile)
+  return src([paths.css.mainSassFile, paths.css.criticalSassFile])
     .pipe($.sourcemaps.init())
     .pipe(sass({
       includePaths: ['scss'],
@@ -154,12 +164,36 @@ function buildCSS(done) {
     .pipe($.postcss([ autoprefixer(), customProperties() ]))
     .pipe($.plumber())
     .pipe($.cleanCss())
-    .pipe($.concat(paths.css.outputCSSFileCompressed)) // output main CSS file without cleanCSS
     .pipe(dest(paths.css.outputCSSFileLocation))
     .pipe($.size({gzip: true, showFiles: true}))
-  done();
+    .on('end', () => {
+      log.info(`Stylesheets file built at: ${paths.css.outputCSSFileLocation}`);
+      done();
+    })
+}
 
-  log.info(`Stylesheet file built at: ${paths.css.outputCSSFileLocation}`);
+/**
+ * criticalCSS
+ * Takes the critical css file and injects it into a template file
+ * @param {*} done 
+ * @version 2
+ */
+function criticalCSS(done) {
+  log.info(`Moving stylesheet from: ${paths.css.outputCSSFileLocation}/${paths.css.outputCriticalCSSFile}`);
+
+  return src(paths.css.criticalTemplateFile)
+    .pipe($.inject(src(`${paths.css.outputCSSFileLocation}/${paths.css.outputCriticalCSSFile}`), {
+      starttag: '/* inject:critical:css */',
+      endtag: '/* endinject */',
+      transform: function (filepath, file) {
+        return file.contents.toString();
+      }
+    }))
+    .pipe(dest('./templates/'))
+    .on('end', () => {
+      log.info(`Critical CSS added to template file at ${paths.css.criticalTemplateFile}`);
+      done();
+    });
 }
 
 /**
@@ -169,7 +203,7 @@ function buildCSS(done) {
 function watchFiles() {
   log.info('Watching CSS and JS files for changes. Enjoy!');
 
-  watch(paths.css.sassFiles, series(styles, reloadBrowserSync));
+  watch(paths.css.sassFiles, series(styles, criticalCSS, reloadBrowserSync));
   watch(paths.js.jsFiles, series(scripts, reloadBrowserSync));
 }
 
@@ -225,9 +259,9 @@ task('styles', styles);
 task('imgs', imgs);
 task('svgs', svgs);
 
-task('build:css', buildCSS);
+task('build:css', series(buildCSS, criticalCSS));
 task('build:js', buildJS);
-task('build', parallel(buildJS, buildCSS));
+task('build', parallel(buildJS, series(buildCSS, criticalCSS)));
 
 task('watch', series(runBrowserSync, watchFiles));
 task('default', parallel(scripts, styles));
